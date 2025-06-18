@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import MainLayout from '@/layouts/MainLayout.vue';
-import Applicant from '@/views/applicants/index.vue';
+import Home from '@/views/home/index.vue';
 const routes = [
   {
     path: '/',
@@ -10,7 +10,7 @@ const routes = [
       {
         path: '',
         name: 'Dashboard',
-        component: Applicant
+        component: Home
       }
     ]
   }

@@ -1,104 +1,140 @@
 <template>
-  <header
-    class="bg-gradient-to-r from-blue-600 to-sky-400 text-white shadow-md"
-  >
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+  <header class="bg-white shadow-md">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
       <!-- Logo -->
-      <div class="text-2xl font-bold">
-        SunFlex <span class="text-sm font-normal">INFORMATION SYSTEM</span>
+      <div
+        class="text-green-900 text-2xl font-bold leading-tight tracking-wide"
+      >
+        Sun<span class="font-serif italic">Flex</span>
+        <div class="text-[10px] font-semibold text-green-800 tracking-wider">
+          INFORMATION SYSTEM
+        </div>
       </div>
 
-      <!-- Hamburger (Mobile) -->
-      <button class="md:hidden text-white" @click="menuOpen = !menuOpen">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
+      <!-- Hamburger for Mobile -->
+      <button class="md:hidden" @click="menuOpen = !menuOpen">
+        <i class="fas fa-bars text-black text-xl"></i>
       </button>
 
       <!-- Desktop Nav -->
-      <nav class="hidden md:flex space-x-6">
+      <nav class="hidden md:flex space-x-10 text-gray-800 font-medium">
+        <router-link
+          to="/"
+          :class="{ 'border-b-2 border-green-700 pb-1': $route.path === '/' }"
+          @click="menuOpen = false"
+        >
+          Home
+        </router-link>
+
         <div class="relative group">
-          <a
-            href="#"
-            :class="[
-              'hover:text-gray-200',
-              { 'font-bold underline': activePage === 'About' }
-            ]"
-            @click.prevent="setActive('About')"
+          <router-link
+            to="/products"
+            :class="{
+              'border-b-2 border-green-700 pb-1': $route.path === '/products'
+            }"
+            class="flex items-center gap-1"
+            @click="menuOpen = false"
           >
-            About
-          </a>
+            Products & Solutions
+            <i class="fas fa-chevron-down text-sm mt-1"></i>
+          </router-link>
+          <!-- Dropdown -->
           <div
-            class="absolute hidden group-hover:block bg-white text-black mt-2 rounded shadow-md min-w-[150px] z-10"
+            class="absolute hidden group-hover:block bg-white text-black shadow-lg rounded mt-2 w-56 z-10"
           >
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Our Team</a>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100"
-              >Our Mission</a
+            <router-link
+              to="/products/core-banking"
+              class="block px-4 py-2 hover:bg-gray-100"
+              >Core Banking</router-link
+            >
+            <router-link
+              to="/products/payment-gateway"
+              class="block px-4 py-2 hover:bg-gray-100"
+              >Payment Gateway</router-link
+            >
+            <router-link
+              to="/products/loan-origination"
+              class="block px-4 py-2 hover:bg-gray-100"
+              >Loan Origination</router-link
             >
           </div>
         </div>
-        <div class="relative group">
-          <a
-            href="#"
-            :class="[
-              'hover:text-gray-200',
-              { 'font-bold underline': activePage === 'Contact' }
-            ]"
-            @click.prevent="setActive('Contact')"
-          >
-            Contact
-          </a>
-          <div
-            class="absolute hidden group-hover:block bg-white text-black mt-2 rounded shadow-md min-w-[150px] z-10"
-          >
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Support</a>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Feedback</a>
-          </div>
-        </div>
+
+        <router-link
+          to="/partner"
+          :class="{
+            'border-b-2 border-green-700 pb-1': $route.path === '/partner'
+          }"
+          @click="menuOpen = false"
+        >
+          Our Partner
+        </router-link>
+
+        <router-link
+          to="/about"
+          :class="{
+            'border-b-2 border-green-700 pb-1': $route.path === '/about'
+          }"
+          @click="menuOpen = false"
+        >
+          About Us
+        </router-link>
+
+        <router-link
+          to="/contact"
+          :class="{
+            'border-b-2 border-green-700 pb-1': $route.path === '/contact'
+          }"
+          @click="menuOpen = false"
+        >
+          Contact Us
+        </router-link>
       </nav>
     </div>
 
     <!-- Mobile Nav -->
-    <div v-if="menuOpen" class="md:hidden px-4 pb-4">
-      <div class="space-y-2">
-        <div>
-          <button
-            class="w-full text-left"
-            @click="toggleSub('about')"
-            :class="{ 'font-bold underline': activePage === 'About' }"
+    <div v-if="menuOpen" class="md:hidden px-6 pb-4 space-y-2 text-gray-800">
+      <router-link to="/" @click="setActive('Home')" class="block"
+        >Home</router-link
+      >
+      <div>
+        <button
+          @click="toggleSub('products')"
+          class="w-full text-left font-medium"
+        >
+          Products & Solutions
+          <i class="fas fa-chevron-down text-sm ml-1"></i>
+        </button>
+        <div v-if="openSub.products" class="pl-4 space-y-1 text-sm">
+          <router-link
+            to="/products/core-banking"
+            @click="menuOpen = false"
+            class="block"
+            >Core Banking</router-link
           >
-            About
-          </button>
-          <div v-if="openSub.about" class="pl-4 text-white space-y-1">
-            <a href="#" class="block">Our Team</a>
-            <a href="#" class="block">Our Mission</a>
-          </div>
-        </div>
-        <div>
-          <button
-            class="w-full text-left"
-            @click="toggleSub('contact')"
-            :class="{ 'font-bold underline': activePage === 'Contact' }"
+          <router-link
+            to="/products/payment-gateway"
+            @click="menuOpen = false"
+            class="block"
+            >Payment Gateway</router-link
           >
-            Contact
-          </button>
-          <div v-if="openSub.contact" class="pl-4 text-white space-y-1">
-            <a href="#" class="block">Support</a>
-            <a href="#" class="block">Feedback</a>
-          </div>
+          <router-link
+            to="/products/loan-origination"
+            @click="menuOpen = false"
+            class="block"
+            >Loan Origination</router-link
+          >
         </div>
       </div>
+      <router-link to="/partner" @click="setActive('Partner')" class="block"
+        >Our Partner</router-link
+      >
+      <router-link to="/about" @click="setActive('About')" class="block"
+        >About Us</router-link
+      >
+      <router-link to="/contact" @click="setActive('Contact')" class="block"
+        >Contact Us</router-link
+      >
     </div>
   </header>
 </template>
@@ -108,24 +144,25 @@ export default {
   data() {
     return {
       menuOpen: false,
-      activePage: '',
+      activePage: 'Home',
       openSub: {
-        about: false,
-        contact: false
+        products: false
       }
     };
   },
   methods: {
     setActive(page) {
       this.activePage = page;
-      this.menuOpen = false; // close on mobile
-      this.openSub.about = false;
-      this.openSub.contact = false;
+      this.menuOpen = false;
+      this.openSub.products = false;
     },
     toggleSub(menu) {
-      this.activePage = menu.charAt(0).toUpperCase() + menu.slice(1);
       this.openSub[menu] = !this.openSub[menu];
     }
   }
 };
 </script>
+
+<style scoped>
+/* Optional: Adjust logo font if needed */
+</style>
