@@ -81,13 +81,14 @@
         </router-link>
 
         <router-link
-          to="/contact"
+          to="/career"
           :class="{
-            'border-b-2 border-green-700 pb-1': $route.path === '/contact'
+            'border-b-2 border-green-700 pb-1':
+              $route.path.startsWith('/career')
           }"
           @click="menuOpen = false"
         >
-          Contact Us
+          Career
         </router-link>
       </nav>
     </div>
@@ -131,6 +132,9 @@
       >
       <router-link to="/about" @click="setActive('About')" class="block"
         >About Us</router-link
+      >
+      <router-link to="/career" @click="setActive('Career')" class="block"
+        >Career</router-link
       >
       <router-link to="/contact" @click="setActive('Contact')" class="block"
         >Contact Us</router-link
