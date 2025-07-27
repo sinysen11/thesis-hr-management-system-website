@@ -17,7 +17,9 @@
       </button>
 
       <!-- Desktop Nav -->
-      <nav class="hidden md:flex space-x-10 text-gray-800 font-medium">
+      <nav
+        class="hidden md:flex space-x-10 text-gray-800 font-medium items-center"
+      >
         <router-link
           to="/"
           :class="{ 'border-b-2 border-green-700 pb-1': $route.path === '/' }"
@@ -26,54 +28,10 @@
           Home
         </router-link>
 
-        <div class="relative group">
-          <router-link
-            to="/products"
-            :class="{
-              'border-b-2 border-green-700 pb-1': $route.path === '/products'
-            }"
-            class="flex items-center gap-1"
-            @click="menuOpen = false"
-          >
-            Products & Solutions
-            <i class="fas fa-chevron-down text-sm mt-1"></i>
-          </router-link>
-          <!-- Dropdown -->
-          <div
-            class="absolute hidden group-hover:block bg-white text-black shadow-lg rounded mt-2 w-56 z-10"
-          >
-            <router-link
-              to="/products/core-banking"
-              class="block px-4 py-2 hover:bg-gray-100"
-              >Core Banking</router-link
-            >
-            <router-link
-              to="/products/payment-gateway"
-              class="block px-4 py-2 hover:bg-gray-100"
-              >Payment Gateway</router-link
-            >
-            <router-link
-              to="/products/loan-origination"
-              class="block px-4 py-2 hover:bg-gray-100"
-              >Loan Origination</router-link
-            >
-          </div>
-        </div>
-
         <router-link
-          to="/partner"
+          to="/about-us"
           :class="{
-            'border-b-2 border-green-700 pb-1': $route.path === '/partner'
-          }"
-          @click="menuOpen = false"
-        >
-          Our Partner
-        </router-link>
-
-        <router-link
-          to="/about"
-          :class="{
-            'border-b-2 border-green-700 pb-1': $route.path === '/about'
+            'border-b-2 border-green-700 pb-1': $route.path === '/about-us'
           }"
           @click="menuOpen = false"
         >
@@ -90,6 +48,15 @@
         >
           Career
         </router-link>
+
+        <!-- User Icon for Login -->
+        <router-link
+          to="/login"
+          class="text-gray-800 hover:text-green-700"
+          @click="menuOpen = false"
+        >
+          <i class="fas fa-user text-xl"></i>
+        </router-link>
       </nav>
     </div>
 
@@ -98,46 +65,14 @@
       <router-link to="/" @click="setActive('Home')" class="block"
         >Home</router-link
       >
-      <div>
-        <button
-          @click="toggleSub('products')"
-          class="w-full text-left font-medium"
-        >
-          Products & Solutions
-          <i class="fas fa-chevron-down text-sm ml-1"></i>
-        </button>
-        <div v-if="openSub.products" class="pl-4 space-y-1 text-sm">
-          <router-link
-            to="/products/core-banking"
-            @click="menuOpen = false"
-            class="block"
-            >Core Banking</router-link
-          >
-          <router-link
-            to="/products/payment-gateway"
-            @click="menuOpen = false"
-            class="block"
-            >Payment Gateway</router-link
-          >
-          <router-link
-            to="/products/loan-origination"
-            @click="menuOpen = false"
-            class="block"
-            >Loan Origination</router-link
-          >
-        </div>
-      </div>
-      <router-link to="/partner" @click="setActive('Partner')" class="block"
-        >Our Partner</router-link
-      >
-      <router-link to="/about" @click="setActive('About')" class="block"
+      <router-link to="/about-us" @click="setActive('About')" class="block"
         >About Us</router-link
       >
       <router-link to="/career" @click="setActive('Career')" class="block"
         >Career</router-link
       >
-      <router-link to="/contact" @click="setActive('Contact')" class="block"
-        >Contact Us</router-link
+      <router-link to="/login" @click="setActive('Login')" class="block"
+        >Login</router-link
       >
     </div>
   </header>
@@ -168,5 +103,5 @@ export default {
 </script>
 
 <style scoped>
-/* Optional: Adjust logo font if needed */
+/* Optional: Adjust logo font or icon styling if needed */
 </style>

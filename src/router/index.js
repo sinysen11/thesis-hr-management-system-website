@@ -6,6 +6,7 @@ import SignUp from '@/views/signUp';
 import Home from '@/views/home/index.vue';
 import Career from '@/views/Jobs';
 import JobDetails from '@/views/Jobs/components/JobDetails.vue';
+import AboutUs from '@/views/aboutUs';
 const routes = [
   {
     path: '/login',
@@ -31,7 +32,8 @@ const routes = [
         name: 'Career',
         component: Career
       },
-      { path: '/career/job-detail', name: 'JobDetail', component: JobDetails }
+      { path: '/career/job-detail', name: 'JobDetail', component: JobDetails },
+      { path: '/about-us', name: 'AboutUs', component: AboutUs }
     ]
   }
 ];
