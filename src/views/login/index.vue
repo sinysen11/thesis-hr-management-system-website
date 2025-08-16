@@ -49,6 +49,7 @@
             </button>
           </div>
           <div class="text-right mt-1">
+            <!-- RouterLink needs to be provided by the parent app or router instance -->
             <RouterLink
               to="/signup"
               class="text-sm text-[#2e6d56] hover:underline"
@@ -60,10 +61,17 @@
         <button
           type="submit"
           class="w-full bg-[#2e6d56] text-white py-2 rounded-md hover:bg-[#245c48] transition text-sm font-medium"
+          :disabled="loading"
         >
-          Login
+          <span v-if="loading">Logging in...</span>
+          <span v-else>Login</span>
         </button>
       </form>
+
+      <!-- Error Message -->
+      <p v-if="error" class="text-red-500 text-sm mt-2 text-center">
+        {{ error }}
+      </p>
 
       <!-- Sign Up Link -->
       <div class="text-center mt-4 text-sm text-gray-700">
@@ -83,31 +91,65 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+<script>
+// We need to import the API service here, just like in the script setup version.
+import { login } from '@/services/auth';
 
-const email = ref('');
-const password = ref('');
-const showPassword = ref(false);
-const router = useRouter();
+export default {
+  // A good practice is to always name your component
+  name: 'LoginComponent',
 
-const togglePassword = () => {
-  showPassword.value = !showPassword.value;
-};
+  // The 'data' option is a function that returns an object.
+  // Each property in this object is reactive.
+  data() {
+    return {
+      email: '',
+      password: '',
+      showPassword: false,
+      loading: false,
+      error: null
+    };
+  },
 
-const login = () => {
-  if (!email.value || !password.value) {
-    alert('Please fill in all required fields.');
-    return;
+  // The 'methods' option is an object where you define your component's functions.
+  // You access data properties and other methods using 'this'.
+  methods: {
+    togglePassword() {
+      // Accessing the 'showPassword' data property with 'this'
+      this.showPassword = !this.showPassword;
+    },
+
+    async login() {
+      // Using 'this' to access the component's data
+      if (!this.email || !this.password) {
+        this.error = 'Please fill in all required fields.';
+        return;
+      }
+
+      this.loading = true;
+      this.error = null;
+
+      try {
+        const credentials = {
+          email: this.email,
+          password: this.password
+        };
+
+        // Call the imported API function
+        const response = await login(credentials);
+
+        if (response.token) {
+          localStorage.setItem('userToken', response.token);
+          this.$router.push('/');
+        } else {
+          this.error = 'Login failed. Invalid credentials or response.';
+        }
+      } catch (err) {
+        this.error = err.message || 'Login failed. Please try again.';
+      } finally {
+        this.loading = false;
+      }
+    }
   }
-  // Simulate login logic (replace with actual API call)
-  console.log('Login attempt:', {
-    email: email.value,
-    password: password.value
-  });
-  alert(`Logging in with email: ${email.value}`);
-  // Redirect to dashboard or home page on success (for demo)
-  router.push('/');
 };
 </script>

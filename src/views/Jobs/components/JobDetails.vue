@@ -39,75 +39,32 @@
         >Back</router-link
       >
       <button
-        v-if="!showForm"
         class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200 ml-4"
         @click="applyJob"
       >
         Apply
       </button>
-      <div v-if="showForm" class="mt-4">
-        <h3 class="text-lg font-semibold mb-2">Application Form</h3>
-        <div class="mb-4">
-          <label for="username" class="block text-sm font-medium text-gray-700"
-            >Username</label
-          >
-          <input
-            v-model="username"
-            type="text"
-            id="username"
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your username"
-          />
-        </div>
-        <div class="mb-4">
-          <label for="password" class="block text-sm font-medium text-gray-700"
-            >Password</label
-          >
-          <input
-            v-model="password"
-            type="password"
-            id="password"
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your password"
-          />
-        </div>
-        <button
-          class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-200"
-          @click="submitApplication"
-        >
-          Submit Application
-        </button>
-        <button
-          class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-200 ml-2"
-          @click="cancelApplication"
-        >
-          Cancel
-        </button>
-      </div>
     </div>
     <div v-else class="text-center text-gray-500">Loading job details...</div>
   </div>
 </template>
 
 <script>
-import { useRoute, useRouter } from 'vue-router';
-
+// We no longer need to import `useRoute` and `useRouter`
+// from 'vue-router' because we will access them via `this.$route`
+// and `this.$router` in the Options API.
 export default {
-  setup() {
-    const route = useRoute();
-    const router = useRouter();
-    return { route, router };
-  },
+  // A good practice is to always name your component
+  name: 'JobDetailComponent',
   data() {
     return {
-      job: null,
-      showForm: false,
-      username: '',
-      password: ''
+      job: null
+      // `showForm` is no longer needed since we are redirecting
     };
   },
   computed: {
     jobs() {
+      // Your jobs array remains the same
       return [
         {
           id: 1,
@@ -238,56 +195,43 @@ export default {
       ];
     }
   },
-  mounted() {
+  // The created hook is a great place to call methods when the component is created
+  created() {
     this.loadJob();
   },
   methods: {
     loadJob() {
-      const id = parseInt(this.route.query.id);
+      const id = parseInt(this.$route.query.id);
       this.job = this.jobs.find((job) => job.id === id) || null;
     },
     applyJob() {
-      // Check if user is logged in (simplified example using localStorage)
-      const isLoggedIn = !!localStorage.getItem('userToken'); // Replace with your auth check
+      // Check if user is logged in
+      const isLoggedIn = !!localStorage.getItem('userToken');
+
       if (!isLoggedIn) {
-        this.router.push('/signup');
+        // If not logged in, redirect to signup
+        this.$router.push('/signup');
       } else {
-        // Show the form for logged-in users
-        this.showForm = true;
-      }
-    },
-    submitApplication() {
-      // Validate username and password (example validation)
-      if (!this.username || !this.password) {
-        alert('Please enter both username and password.');
-        return;
-      }
+        // If logged in, get user data from localStorage
+        const user = JSON.parse(localStorage.getItem('user'));
+        const username = user.username;
+        const email = user.email;
 
-      // Placeholder for application submission logic with username and password
-      alert(
-        `Application submitted for ${this.job.title} with username: ${
-          this.username
-        } at ${new Date().toLocaleString('en-US', {
-          timeZone: 'Asia/Phnom_Penh'
-        })}`
-      );
-      // Add your actual submission logic here (e.g., API call with username and password)
-      // Example: this.$http.post('/api/apply', { jobId: this.job.id, username: this.username, password: this.password });
-
-      // Reset form and hide it after submission
-      this.resetForm();
-    },
-    cancelApplication() {
-      this.resetForm();
-    },
-    resetForm() {
-      this.showForm = false;
-      this.username = '';
-      this.password = '';
+        // Redirect to a new application page, passing job ID and user info
+        this.$router.push({
+          path: '/career/applicant',
+          query: {
+            jobId: this.job.id,
+            username: username,
+            email: email
+          }
+        });
+      }
     }
   },
+  // Use a watcher to reload the job details if the route's query changes
   watch: {
-    'route.query.id': 'loadJob'
+    '$route.query.id': 'loadJob'
   }
 };
 </script>

@@ -5,10 +5,9 @@
       <div
         class="text-green-900 text-2xl font-bold leading-tight tracking-wide"
       >
-        Sun<span class="font-serif italic">Flex</span>
-        <div class="text-[10px] font-semibold text-green-800 tracking-wider">
-          INFORMATION SYSTEM
-        </div>
+        <router-link to="/"
+          ><img src="@/assets/images/4_files/logo.png" alt="" />
+        </router-link>
       </div>
 
       <!-- Hamburger for Mobile -->
@@ -104,4 +103,7 @@ export default {
 
 <style scoped>
 /* Optional: Adjust logo font or icon styling if needed */
+header {
+  z-index: 99;
+}
 </style>

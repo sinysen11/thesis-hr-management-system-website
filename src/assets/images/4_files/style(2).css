@@ -1,0 +1,99 @@
+@import 'base.css';
+.bluemenu #menu-homepage {
+  padding-left:0;
+}
+.bluemenu li {
+   margin: 0 0 0 1em;
+   position:relative;
+}
+.bluemenu li a {
+    font-size: 0.846em;
+    padding: 1.5em 0 1.35em 0;
+}
+.bluemenu li a:before {
+    position: absolute;
+    content: "|";
+    display: block;
+    left: -0.8em;
+}
+.bluemenu li:first-child a:before { 
+    display:none;
+}
+.main-megamenu #mega-menu-wrap-max_mega_menu_1 #mega-menu-max_mega_menu_1 > li.mega-menu-item > a.mega-menu-link {
+    color: #302f2b;
+}
+.intell-action{
+    padding: 0 8rem;
+	text-align:center;
+}
+.intell-action img {
+	display: inline-block;
+    margin: auto;
+	padding: 1rem 3.5rem;
+	width: 28%;
+	vertical-align:top;
+}
+.img-section img{
+	padding: 0;
+	width: 100%;
+}
+/*** Banner alignment starts ***/
+.bannertext.text-align-left {
+	text-align:left;
+}
+.bannertext.text-align-right {
+	text-align:right;
+}
+.bannertext.text-align-center {
+	text-align:center;
+}
+/*** Banner alignment ends ***/
+@media(max-width:991px){
+	.intell-action{
+	padding: 0 4rem;
+}
+.intell-action img {
+  padding: 1rem 3rem;
+	width: 50%;
+}
+}
+@media(max-width:767px){
+	.intell-action{
+	padding: 0;
+}
+.intell-action img {
+  padding: 0;
+	width: 100%;
+}
+}
+.card-box h6{
+    color: #0084BF;
+    font-weight: 500;
+    min-height: 2.055em;
+	line-height: 1.4;
+}
+.card-box p{
+    min-height: 4em;
+}
+.card-box {
+    box-shadow: 1px 1px 5px #888887;
+    padding: 1.5em;
+    border-radius: 0.3em;
+    height: 12em;
+}
+.tab-data p{
+	text-align: left;
+}
+@media(max-width:767px){
+	.card-box {
+/* 	height: 11em; */
+		height:auto;
+}
+}
+
+.digital-channel .title {
+    color: #555;
+    font-size: 2.7em;
+    margin: 0 0 0.85em;
+    font-weight: 400;
+}
