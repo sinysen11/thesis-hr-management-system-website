@@ -15,9 +15,48 @@
       <!-- Form -->
       <form @submit.prevent="handleRegister" class="space-y-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700"
-            >Email <span class="text-red-500">*</span></label
-          >
+          <label class="block text-sm font-medium text-gray-700">
+            First Name <span class="text-red-500">*</span>
+          </label>
+          <input
+            v-model="first_name"
+            type="text"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e6d56] transition text-sm"
+            placeholder="Enter your first name"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">
+            Last Name <span class="text-red-500">*</span>
+          </label>
+          <input
+            v-model="last_name"
+            type="text"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e6d56] transition text-sm"
+            placeholder="Enter your last name"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">
+            Phone <span class="text-red-500">*</span>
+          </label>
+          <input
+            v-model="phone"
+            type="text"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e6d56] transition text-sm"
+            placeholder="Enter your phone number"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">
+            Email <span class="text-red-500">*</span>
+          </label>
           <input
             v-model="email"
             type="email"
@@ -100,21 +139,50 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<script>
+import axios from 'axios';
 
-const email = ref('');
-const password = ref('');
-const confirmPassword = ref('');
-const showPassword = ref(false);
-const showConfirmPassword = ref(false);
+export default {
+  data() {
+    return {
+      first_name: '',
+      last_name: '',
+      email: '',
+      phone: '',
+      password: '',
+      confirmPassword: '',
+      showPassword: false,
+      showConfirmPassword: false
+    };
+  },
+  methods: {
+    async handleRegister() {
+      if (this.password !== this.confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
 
-const handleRegister = () => {
-  if (password.value !== confirmPassword.value) {
-    alert('Passwords do not match!');
-    return;
+      try {
+        const response = await axios.post(
+          'http://localhost:3000/api/v1/applicant/register',
+          {
+            first_name: this.first_name,
+            last_name: this.last_name,
+            email: this.email,
+            password: this.password,
+            phone: this.phone
+          }
+        );
+
+        alert('Registration successful!');
+        console.log('Response:', response.data);
+
+        this.$router.push('/login');
+      } catch (error) {
+        console.error('Error registering:', error);
+        alert('Registration failed, please try again.');
+      }
+    }
   }
-  // Submit logic here (e.g., API call)
-  console.log({ email: email.value, password: password.value });
 };
 </script>
