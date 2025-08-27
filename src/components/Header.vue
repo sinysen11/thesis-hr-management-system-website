@@ -1,79 +1,91 @@
 <template>
-  <header class="bg-white shadow-md">
+  <header class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <!-- Logo -->
-      <div
-        class="text-green-900 text-2xl font-bold leading-tight tracking-wide"
-      >
-        <router-link to="/"
-          ><img src="@/assets/images/4_files/logo.png" alt="" />
+      <div class="flex-shrink-0">
+        <router-link to="/">
+          <img
+            src="@/assets/images/4_files/logo.png"
+            alt="SunFlex Logo"
+            class="h-10"
+          />
         </router-link>
       </div>
 
-      <!-- Hamburger for Mobile -->
-      <button class="md:hidden" @click="menuOpen = !menuOpen">
-        <i class="fas fa-bars text-black text-xl"></i>
-      </button>
-
-      <!-- Desktop Nav -->
-      <nav
-        class="hidden md:flex space-x-10 text-gray-800 font-medium items-center"
-      >
+      <nav class="hidden md:flex items-center space-x-8 lg:space-x-12">
         <router-link
           to="/"
-          :class="{ 'border-b-2 border-green-700 pb-1': $route.path === '/' }"
-          @click="menuOpen = false"
+          class="nav-link"
+          :class="{ 'nav-link--active': $route.path === '/' }"
         >
           Home
         </router-link>
-
         <router-link
           to="/about-us"
-          :class="{
-            'border-b-2 border-green-700 pb-1': $route.path === '/about-us'
-          }"
-          @click="menuOpen = false"
+          class="nav-link"
+          :class="{ 'nav-link--active': $route.path === '/about-us' }"
         >
           About Us
         </router-link>
-
         <router-link
           to="/career"
-          :class="{
-            'border-b-2 border-green-700 pb-1':
-              $route.path.startsWith('/career')
-          }"
-          @click="menuOpen = false"
+          class="nav-link"
+          :class="{ 'nav-link--active': $route.path.startsWith('/career') }"
         >
           Career
         </router-link>
-
-        <!-- User Icon for Login -->
-        <router-link
-          to="/login"
-          class="text-gray-800 hover:text-green-700"
-          @click="menuOpen = false"
-        >
+        <router-link to="/login" class="nav-link">
           <i class="fas fa-user text-xl"></i>
         </router-link>
       </nav>
+
+      <button
+        @click="menuOpen = !menuOpen"
+        class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500"
+        aria-controls="mobile-menu"
+        :aria-expanded="menuOpen"
+      >
+        <i class="fas fa-bars text-black text-xl"></i>
+      </button>
     </div>
 
-    <!-- Mobile Nav -->
-    <div v-if="menuOpen" class="md:hidden px-6 pb-4 space-y-2 text-gray-800">
-      <router-link to="/" @click="setActive('Home')" class="block"
-        >Home</router-link
-      >
-      <router-link to="/about-us" @click="setActive('About')" class="block"
-        >About Us</router-link
-      >
-      <router-link to="/career" @click="setActive('Career')" class="block"
-        >Career</router-link
-      >
-      <router-link to="/login" @click="setActive('Login')" class="block"
-        >Login</router-link
-      >
-    </div>
+    <transition
+      enter-active-class="transition ease-out duration-200"
+      enter-from-class="transform opacity-0 -translate-y-2"
+      enter-to-class="transform opacity-100 translate-y-0"
+      leave-active-class="transition ease-in duration-150"
+      leave-from-class="transform opacity-100 translate-y-0"
+      leave-to-class="transform opacity-0 -translate-y-2"
+    >
+      <div v-if="menuOpen" class="md:hidden bg-gray-50 py-2" id="mobile-menu">
+        <router-link
+          to="/"
+          @click="menuOpen = false"
+          class="mobile-link"
+          :class="{ 'mobile-link--active': $route.path === '/' }"
+        >
+          Home
+        </router-link>
+        <router-link
+          to="/about-us"
+          @click="menuOpen = false"
+          class="mobile-link"
+          :class="{ 'mobile-link--active': $route.path === '/about-us' }"
+        >
+          About Us
+        </router-link>
+        <router-link
+          to="/career"
+          @click="menuOpen = false"
+          class="mobile-link"
+          :class="{ 'mobile-link--active': $route.path.startsWith('/career') }"
+        >
+          Career
+        </router-link>
+        <router-link to="/login" @click="menuOpen = false" class="mobile-link">
+          Login
+        </router-link>
+      </div>
+    </transition>
   </header>
 </template>
 
@@ -81,29 +93,49 @@
 export default {
   data() {
     return {
-      menuOpen: false,
-      activePage: 'Home',
-      openSub: {
-        products: false
-      }
+      menuOpen: false
     };
-  },
-  methods: {
-    setActive(page) {
-      this.activePage = page;
-      this.menuOpen = false;
-      this.openSub.products = false;
-    },
-    toggleSub(menu) {
-      this.openSub[menu] = !this.openSub[menu];
-    }
   }
 };
 </script>
 
 <style scoped>
-/* Optional: Adjust logo font or icon styling if needed */
-header {
-  z-index: 99;
+/* Scoped CSS for custom styles */
+.nav-link {
+  font-weight: 500;
+  color: #4a5568;
+  padding-bottom: 4px;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #38a169;
+}
+
+.nav-link--active {
+  color: #38a169;
+  border-bottom: 2px solid #38a169;
+}
+
+/* Mobile Link Styles */
+.mobile-link {
+  display: block;
+  padding: 12px 24px;
+  font-weight: 500;
+  color: #4a5568;
+  border-left: 4px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.mobile-link:hover {
+  background-color: #e2e8f0;
+  color: #38a169;
+}
+
+.mobile-link--active {
+  background-color: #e6fffa;
+  color: #2f855a;
+  border-left-color: #38a169;
 }
 </style>
