@@ -29,7 +29,7 @@ export const getJobById = async (id) => {
  */
 export const submitApplicant = async (data) => {
   try {
-    const response = await api.post('/submit', data);
+    const response = await api.post('/apply-job/submit', data);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error('Network error');

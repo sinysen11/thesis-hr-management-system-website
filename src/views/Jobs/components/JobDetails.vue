@@ -4,17 +4,21 @@
       Loading job details...
     </div>
     <div v-else-if="job" class="bg-white p-6 rounded-lg shadow-md">
-      <h2 class="text-2xl font-bold text-green-600 mb-4">{{ job.title }}</h2>
+      <h2 class="text-2xl font-bold text-green-600 mb-4">
+        {{ job.title.des_en }}
+      </h2>
       <div class="flex items-center text-sm text-gray-600 mb-4">
         <span>{{ job.type }}</span>
         <span class="mx-2">•</span>
-        <span>{{ job.location }}</span>
+        <span>{{ job.branch }}</span>
         <span class="mx-2">•</span>
         <span>Posted {{ timeAgo(job.postedDate) }}</span>
-        <span v-if="job.department" class="mx-2">•</span>
-        <span v-if="job.department" class="text-blue-500">{{
-          job.department
+        <span v-if="job.department.name_en" class="mx-2">•</span>
+        <span v-if="job.department.name_en" class="text-blue-500">{{
+          job.department.name_en
         }}</span>
+        <span class="mx-2">•</span>
+        <span>Staff Needed: {{ job.number_staff }}</span>
       </div>
       <div class="mb-6">
         <h3 class="text-lg font-semibold mb-2">Job Summary:</h3>
@@ -36,6 +40,23 @@
           </li>
         </ul>
       </div>
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Additional Information</h3>
+        <p class="text-gray-700">
+          <span class="font-semibold">Salary:</span> {{ job.salary }}
+        </p>
+        <p class="text-gray-700">
+          <span class="font-semibold">Publish Date:</span>
+          {{ formatDate(job.publish_date) }}
+        </p>
+        <p class="text-gray-700">
+          <span class="font-semibold">Close Date:</span>
+          {{ formatDate(job.close_date) }}
+        </p>
+        <p class="text-gray-700">
+          <span class="font-semibold">Benefits:</span> {{ job.benefits }}
+        </p>
+      </div>
       <router-link
         to="/career"
         class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200"
@@ -54,7 +75,7 @@
 </template>
 
 <script>
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import { getJobById } from '@/services/jobs';
 
 export default {
@@ -100,19 +121,28 @@ export default {
         : new Date();
       return {
         id: apiJob._id,
-        title: apiJob.type,
-        type: apiJob.type,
-        salary: apiJob.salary,
-        description: apiJob.description,
-        responsible: apiJob.responsible,
-        requirement: apiJob.requirement,
+        title: apiJob.title || apiJob.type, // Use title if available, fallback to type
+        type: apiJob.type || 'N/A',
+        salary: apiJob.salary || 'N/A',
+        description: apiJob.description || 'N/A',
+        responsible: apiJob.responsible || 'N/A',
+        requirement: apiJob.requirement || 'N/A',
         postedDate: postedDate,
-        location: 'N/A',
-        department: 'N/A'
+        branch: apiJob.branch || 'N/A',
+        department: apiJob.department || 'N/A',
+        number_staff: apiJob.number_staff || 'N/A',
+        publish_date: apiJob.publish_date
+          ? new Date(apiJob.publish_date)
+          : null,
+        close_date: apiJob.close_date ? new Date(apiJob.close_date) : null,
+        benefits: apiJob.benefits || 'N/A'
       };
     },
     timeAgo(date) {
       return formatDistanceToNow(date, { addSuffix: true });
+    },
+    formatDate(date) {
+      return date ? format(new Date(date), 'MMM dd, yyyy') : 'N/A';
     },
     applyJob() {
       const isLoggedIn = !!localStorage.getItem('userToken');
@@ -124,12 +154,12 @@ export default {
           path: '/career/applicant',
           query: {
             jobId: this.job.id,
-            apply_position: this.job.title, // Pass job title as apply_position
-            first_name: user.first_name || user.username || '', // Use username as fallback
+            apply_position: this.job.title.des_en, // Pass job title
+            branch: this.job.branch, // Pass branch
+            first_name: user.first_name || user.username || '',
             last_name: user.last_name || '',
             sex: user.sex || 'Male',
             date_of_birth: user.date_of_birth || '',
-            age: user.age || '',
             telegram: user.telegram || '',
             telephone: user.telephone || '',
             current_address: user.current_address || '',

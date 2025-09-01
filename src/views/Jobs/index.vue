@@ -47,13 +47,19 @@
             <span class="text-gray-500 text-lg">🏢</span>
           </div>
           <div class="flex-1">
-            <h3 class="text-lg font-semibold text-gray-800">{{ job.title }}</h3>
+            <h3 class="text-lg font-semibold text-gray-800">{{ job.title.des_en }}</h3>
             <div class="flex items-center text-gray-600 text-sm space-x-2 mb-1">
               <span>{{ timeAgo(job.postedDate) }}</span>
               <span>•</span>
               <span class="text-gray-700 font-medium">{{ job.salary }}</span>
+              <span>•</span>
+              <span>{{ job.branch }}</span>
             </div>
             <p class="text-blue-500 font-medium text-sm mt-2">{{ job.type }}</p>
+            <p class="text-gray-500 text-sm mt-1">
+              <span class="font-semibold">Department:</span>
+              {{ job.department.name_en }}
+            </p>
             <p class="text-gray-500 text-sm mt-1">
               <span class="font-semibold">Description:</span>
               {{ job.description }}
@@ -65,6 +71,21 @@
             <p class="text-gray-500 text-sm mt-1">
               <span class="font-semibold">Requirements:</span>
               {{ job.requirement }}
+            </p>
+            <p class="text-gray-500 text-sm mt-1">
+              <span class="font-semibold">Number of Staff:</span>
+              {{ job.number_staff }}
+            </p>
+            <p class="text-gray-500 text-sm mt-1">
+              <span class="font-semibold">Publish Date:</span>
+              {{ formatDate(job.publish_date) }}
+            </p>
+            <p class="text-gray-500 text-sm mt-1">
+              <span class="font-semibold">Close Date:</span>
+              {{ formatDate(job.close_date) }}
+            </p>
+            <p class="text-gray-500 text-sm mt-1">
+              <span class="font-semibold">Benefits:</span> {{ job.benefits }}
             </p>
           </div>
           <div class="text-gray-400 hover:text-gray-600 cursor-pointer">
@@ -90,11 +111,10 @@
 </template>
 
 <script>
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import { getAllJobs } from '@/services/jobs';
 
 export default {
-  // Define reactive data properties here
   data() {
     return {
       jobs: [],
@@ -102,7 +122,6 @@ export default {
       isLoading: true
     };
   },
-  // Use a lifecycle hook to fetch data when the component is mounted
   async mounted() {
     try {
       const result = await getAllJobs();
@@ -119,7 +138,6 @@ export default {
       this.isLoading = false;
     }
   },
-  // Define computed properties for derived state
   computed: {
     filteredJobs() {
       const query = this.searchQuery.toLowerCase().trim();
@@ -129,11 +147,12 @@ export default {
       return this.jobs.filter(
         (job) =>
           job.title.toLowerCase().includes(query) ||
-          job.description.toLowerCase().includes(query)
+          job.description.toLowerCase().includes(query) ||
+          job.department.toLowerCase().includes(query) ||
+          job.branch.toLowerCase().includes(query)
       );
     }
   },
-  // Define methods for actions and helper functions
   methods: {
     mapJobs(apiJobs) {
       return apiJobs.map((apiJob) => {
@@ -144,15 +163,22 @@ export default {
           : new Date();
         return {
           id: apiJob._id,
-          title: apiJob.type,
-          type: apiJob.type,
-          salary: apiJob.salary,
-          description: apiJob.description,
-          responsible: apiJob.responsible,
-          requirement: apiJob.requirement,
+          title: apiJob.title || apiJob.type, // Use title if available, fallback to type
+          type: apiJob.type || 'N/A',
+          salary: apiJob.salary || 'N/A',
+          description: apiJob.description || 'N/A',
+          responsible: apiJob.responsible || 'N/A',
+          requirement: apiJob.requirement || 'N/A',
           postedDate: postedDate,
-          location: 'N/A',
-          department: 'N/A',
+          location: apiJob.branch || 'N/A', // Map branch to location
+          department: apiJob.department || 'N/A',
+          number_staff: apiJob.number_staff || 'N/A',
+          publish_date: apiJob.publish_date
+            ? new Date(apiJob.publish_date)
+            : null,
+          close_date: apiJob.close_date ? new Date(apiJob.close_date) : null,
+          branch: apiJob.branch || 'N/A',
+          benefits: apiJob.benefits || 'N/A',
           experience: 'N/A',
           logo: null
         };
@@ -162,11 +188,13 @@ export default {
       console.log('Filtering with query:', this.searchQuery);
     },
     goToJobDetail(jobId) {
-      // Access the router instance via 'this'
       this.$router.push({ path: '/career/job-detail', query: { id: jobId }});
     },
     timeAgo(date) {
       return formatDistanceToNow(date, { addSuffix: true });
+    },
+    formatDate(date) {
+      return date ? format(new Date(date), 'MMM dd, yyyy') : 'N/A';
     }
   }
 };

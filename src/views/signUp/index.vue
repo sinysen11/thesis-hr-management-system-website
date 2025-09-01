@@ -42,6 +42,60 @@
 
         <div>
           <label class="block text-sm font-medium text-gray-700">
+            Sex <span class="text-red-500">*</span>
+          </label>
+          <select
+            v-model="sex"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e6d56] transition text-sm"
+          >
+            <option value="" disabled selected>Select your sex</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">
+            Date of Birth <span class="text-red-500">*</span>
+          </label>
+          <input
+            v-model="dob"
+            type="date"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e6d56] transition text-sm"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">
+            Current Address <span class="text-red-500">*</span>
+          </label>
+          <input
+            v-model="current_address"
+            type="text"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e6d56] transition text-sm"
+            placeholder="Enter your current address"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">
+            Telegram <span class="text-red-500">*</span>
+          </label>
+          <input
+            v-model="telegram"
+            type="text"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e6d56] transition text-sm"
+            placeholder="Enter your Telegram username"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">
             Phone <span class="text-red-500">*</span>
           </label>
           <input
@@ -96,7 +150,7 @@
           </label>
           <div class="mt-1 relative">
             <input
-              v-model="confirmPassword"
+              v-model="confirm_password"
               :type="showConfirmPassword ? 'text' : 'password'"
               required
               class="w-full pr-10 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2e6d56] transition text-sm"
@@ -140,39 +194,44 @@
 </template>
 
 <script>
-import axios from 'axios';
-
+import { register } from '@/services/auth';
 export default {
   data() {
     return {
       first_name: '',
       last_name: '',
+      sex: '',
+      dob: '',
+      current_address: '',
+      telegram: '',
       email: '',
       phone: '',
       password: '',
-      confirmPassword: '',
+      confirm_password: '',
       showPassword: false,
       showConfirmPassword: false
     };
   },
   methods: {
     async handleRegister() {
-      if (this.password !== this.confirmPassword) {
+      if (this.password !== this.confirm_password) {
         alert('Passwords do not match!');
         return;
       }
 
       try {
-        const response = await axios.post(
-          'https://thesis-posting-and-leave-request-api.onrender.com/api/v1/applicant/register',
-          {
-            first_name: this.first_name,
-            last_name: this.last_name,
-            email: this.email,
-            password: this.password,
-            phone: this.phone
-          }
-        );
+        const response = await register({
+          first_name: this.first_name,
+          last_name: this.last_name,
+          sex: this.sex,
+          dob: this.dob,
+          current_address: this.current_address,
+          telegram: this.telegram,
+          email: this.email,
+          password: this.password,
+          confirm_password: this.confirm_password, // Added to payload
+          phone: this.phone
+        });
 
         alert('Registration successful!');
         console.log('Response:', response.data);
