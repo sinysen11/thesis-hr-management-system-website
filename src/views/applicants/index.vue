@@ -405,7 +405,8 @@ export default {
         knows_someone: false,
         knows_someone_details: '',
         why_apply: '',
-        resume: null
+        resume: null,
+        token: ''
       },
       isSubmitting: false,
       successMessage: '',
@@ -416,14 +417,24 @@ export default {
     this.prefillForm();
   },
   methods: {
+    normalizeId(id) {
+      return (id || '').toString().replace(/-/g, '');
+    },
     prefillForm() {
       const query = this.$route.query;
-      this.form.jobId = query.jobId || ''; // Ensure jobId comes from query params
+
+      // jobId without dashes
+      this.form.jobId = this.normalizeId(query.jobId || '');
+
       this.form.apply_position = query.apply_position || 'N/A';
       this.form.requested_location = query.branch || 'N/A';
-      // Prefill user-related fields from localStorage
+
       const user = JSON.parse(localStorage.getItem('user') || '{}');
-      this.form.applicant = user.data.userId || ''; // Assuming user object has _id
+
+      // applicantId without dashes
+      this.form.applicant = this.normalizeId(user?.data?.userId || '');
+
+      this.token = (localStorage.getItem('token') || '').trim();
     },
     handleFileUpload(event) {
       const file = event.target.files[0];
@@ -505,7 +516,8 @@ export default {
       }
 
       try {
-        const response = await submitApplicant(formData);
+        const response = await submitApplicant(formData, this.token);
+        console.log('API response:', response);
         if (response && response.status === 1) {
           this.successMessage =
             response.message || 'Application submitted successfully!';

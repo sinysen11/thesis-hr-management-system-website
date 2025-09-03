@@ -23,15 +23,23 @@ export const getJobById = async (id) => {
   }
 };
 /**
- * Fetches a single job posting by its ID.
- * @param {string} id The ID of the job posting to fetch.
- * @returns {Promise<object>} A promise that resolves with the job data.
+ * Submits an applicant for a job posting.
+ * @param {object} data The applicant data to submit.
+ * @param {string} token The authorization token.
+ * @returns {Promise<object>} A promise that resolves with the response.
  */
-export const submitApplicant = async (data) => {
+export const submitApplicant = async (data, token) => {
+  console.log('Submitting applicant with token:', token);
   try {
-    const response = await api.post('/apply-job/submit', data);
-    return response.data;
+    const response = await api.post('/apply-job/submit', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`
+        }
+    });
+    return response;
   } catch (error) {
     throw error.response ? error.response.data : new Error('Network error');
   }
 };
+
