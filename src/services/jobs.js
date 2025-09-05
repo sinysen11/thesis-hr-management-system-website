@@ -35,11 +35,10 @@ export const submitApplicant = async (data, token) => {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${token}`
-        }
+      }
     });
-    return response;
+    return response.data; // ✅ return just the backend response body
   } catch (error) {
     throw error.response ? error.response.data : new Error('Network error');
   }
 };
-

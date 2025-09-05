@@ -423,91 +423,6 @@
         </div>
       </section>
     </main>
-
-    <footer class="footer">
-      <div class="contain">
-        <div class="footer__content">
-          <div class="footer__copyright">
-            <span
-              >©2025 by SunFlex (Cambodia) Co.,Ltd<br />Best viewed with IE 9+,
-              Firefox 16+, Safari 5.1, Chrome 23+.</span
-            >
-          </div>
-          <nav class="footer__nav">
-            <ul class="footer__menu">
-              <li class="menu-item"><router-link to="/">Home</router-link></li>
-              <li class="menu-item">
-                <router-link to="/our-partner">Our Partner</router-link>
-              </li>
-              <li class="menu-item">
-                <router-link to="/about-us">About Us</router-link>
-              </li>
-              <li class="menu-item">
-                <router-link to="/contact-us">Contact Us</router-link>
-              </li>
-            </ul>
-          </nav>
-          <div class="footer__brand">
-            <b>SunFlex</b>
-          </div>
-        </div>
-        <a class="footer__scroll" href="javascript:void(0)">
-          <img
-            src="https://img.freepik.com/premium-photo/wide-angle-shot-single-tree-growing-clouded-sky-sunset-surrounded-by-grass_181624-22807.jpg"
-            alt="scroll-up"
-            title="scroll-up"
-          />
-        </a>
-      </div>
-      <div class="footer__mobile">
-        <a class="footer__scroll" href="javascript:void(0)">
-          <img
-            src="https://img.freepik.com/premium-photo/wide-angle-shot-single-tree-growing-clouded-sky-sunset-surrounded-by-grass_181624-22807.jpg"
-            alt="scroll-up"
-            title="scroll-up"
-          />
-        </a>
-        <ul class="footer__social">
-          <li>
-            <a href="javascript:void(0);">
-              <img
-                src="https://www.adobe.com/creativecloud/file-types/image/vector/media_1c840d54c0c6d35eb38bebd13dec2f908cf9a275e.png?width=750&format=png&optimize=medium"
-                alt="linkedin"
-                title="linkedin"
-              />
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0);">
-              <img
-                src="https://www.adobe.com/creativecloud/file-types/image/vector/media_1c840d54c0c6d35eb38bebd13dec2f908cf9a275e.png?width=750&format=png&optimize=medium"
-                alt="twitter"
-                title="twitter"
-              />
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0);">
-              <img
-                src="https://www.adobe.com/creativecloud/file-types/image/vector/media_1c840d54c0c6d35eb38bebd13dec2f908cf9a275e.png?width=750&format=png&optimize=medium"
-                alt="facebook"
-                title="facebook"
-              />
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0);">
-              <img
-                src="https://www.adobe.com/creativecloud/file-types/image/vector/media_1c840d54c0c6d35eb38bebd13dec2f908cf9a275e.png?width=750&format=png&optimize=medium"
-                alt="youtube"
-                title="youtube"
-              />
-            </a>
-          </li>
-        </ul>
-        <p>© SunFlex (Cambodia) Co.,Ltd, 2025</p>
-      </div>
-    </footer>
   </div>
 </template>
 
@@ -519,6 +434,7 @@ import image3 from '@/assets/images/banner3.png';
 import image4 from '@/assets/images/banner4.png';
 export default {
   name: 'Home',
+  components: {},
   data() {
     return {
       currentIndex: 0,

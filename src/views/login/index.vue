@@ -13,7 +13,7 @@
       </div>
 
       <!-- Login Form -->
-      <form @submit.prevent="login" class="space-y-4">
+      <form @submit.prevent="submitLogin" class="space-y-4">
         <div>
           <label class="block text-sm font-medium text-gray-700"
             >Email <span class="text-red-500">*</span></label
@@ -49,7 +49,6 @@
             </button>
           </div>
           <div class="text-right mt-1">
-            <!-- RouterLink needs to be provided by the parent app or router instance -->
             <RouterLink
               to="/signup"
               class="text-sm text-[#2e6d56] hover:underline"
@@ -61,16 +60,16 @@
         <button
           type="submit"
           class="w-full bg-[#2e6d56] text-white py-2 rounded-md hover:bg-[#245c48] transition text-sm font-medium"
-          :disabled="loading"
+          :disabled="isLoading"
         >
-          <span v-if="loading">Logging in...</span>
+          <span v-if="isLoading">Logging in...</span>
           <span v-else>Login</span>
         </button>
       </form>
 
       <!-- Error Message -->
-      <p v-if="error" class="text-red-500 text-sm mt-2 text-center">
-        {{ error }}
+      <p v-if="errorMessage" class="text-red-500 text-sm mt-2 text-center">
+        {{ errorMessage }}
       </p>
 
       <!-- Sign Up Link -->
@@ -82,73 +81,60 @@
           >Sign Up</RouterLink
         >
       </div>
-
-      <!-- Footer -->
-      <div class="text-xs text-center text-gray-500 mt-6">
-        ©2025 by SunFlex (Cambodia) Co., Ltd<br />
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-// We need to import the API service here, just like in the script setup version.
 import { login } from '@/services/auth';
 
 export default {
-  // A good practice is to always name your component
-  name: 'LoginComponent',
-
-  // The 'data' option is a function that returns an object.
-  // Each property in this object is reactive.
+  name: 'Login',
+  components: {},
   data() {
     return {
       email: '',
       password: '',
-      showPassword: false,
-      loading: false,
-      error: null
+      errorMessage: '',
+      isLoading: false,
+      showPassword: false
     };
   },
-
-  // The 'methods' option is an object where you define your component's functions.
-  // You access data properties and other methods using 'this'.
   methods: {
-    togglePassword() {
-      // Accessing the 'showPassword' data property with 'this'
-      this.showPassword = !this.showPassword;
-    },
-
-    async login() {
-      // Using 'this' to access the component's data
-      if (!this.email || !this.password) {
-        this.error = 'Please fill in all required fields.';
-        return;
-      }
-
-      this.loading = true;
-      this.error = null;
-
+    async submitLogin() {
+      console.log('Login triggered');
+      this.isLoading = true;
+      this.errorMessage = '';
       try {
-        const credentials = {
+        const response = await login({
           email: this.email,
           password: this.password
-        };
-
-        // Call the imported API function
-        const response = await login(credentials);
-
-        if (response.token) {
-          localStorage.setItem('userToken', response.token);
-          this.$router.push('/');
+        });
+        if (response.status === 1) {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem(
+            'user',
+            JSON.stringify({
+              data: {
+                userId: response.applicant._id,
+                first_name: response.applicant.first_name,
+                last_name: response.applicant.last_name,
+                email: response.applicant.email
+              }
+            })
+          );
+          this.$router.push('/career');
         } else {
-          this.error = 'Login failed. Invalid credentials or response.';
+          this.errorMessage = response.message || 'Login failed';
         }
-      } catch (err) {
-        this.error = err.message || 'Login failed. Please try again.';
+      } catch (error) {
+        this.errorMessage = error.message || 'An error occurred during login';
       } finally {
-        this.loading = false;
+        this.isLoading = false;
       }
+    },
+    togglePassword() {
+      this.showPassword = !this.showPassword;
     }
   }
 };
