@@ -123,7 +123,7 @@ export default {
               }
             })
           );
-          this.$router.push('/career');
+          this.$router.push('/');
         } else {
           this.errorMessage = response.message || 'Login failed';
         }

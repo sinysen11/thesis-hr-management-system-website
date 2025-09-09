@@ -145,7 +145,7 @@ export default {
       return date ? format(new Date(date), 'MMM dd, yyyy') : 'N/A';
     },
     applyJob() {
-      const isLoggedIn = !!localStorage.getItem('userToken');
+      const isLoggedIn = !!localStorage.getItem('token');
       if (!isLoggedIn) {
         this.$router.push('/signup');
       } else {
