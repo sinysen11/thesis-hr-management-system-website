@@ -9,11 +9,6 @@ export const getAllJobs = async (data) => {
   }
 };
 
-/**
- * Fetches a single job posting by its ID.
- * @param {string} id The ID of the job posting to fetch.
- * @returns {Promise<object>} A promise that resolves with the job data.
- */
 export const getJobById = async (id) => {
   try {
     const response = await api.get(`/job-posting/${id}`);
@@ -22,23 +17,33 @@ export const getJobById = async (id) => {
     throw error.response ? error.response.data : new Error('Network error');
   }
 };
-/**
- * Submits an applicant for a job posting.
- * @param {object} data The applicant data to submit.
- * @param {string} token The authorization token.
- * @returns {Promise<object>} A promise that resolves with the response.
- */
+
 export const submitApplicant = async (data, token) => {
-  console.log('Submitting applicant with token:', token);
   try {
     const response = await api.post('/apply-job/submit', data, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       }
     });
-    return response.data; // ✅ return just the backend response body
+    return response.data;
   } catch (error) {
+    throw error.response ? error.response.data : new Error('Network error');
+  }
+};
+
+export const uploadDocument = async (data, token, fileType = 'application/octet-stream') => {
+  try {
+    const response = await api.post('/document', data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': fileType // Use provided fileType or default to octet-stream
+      }
+    });
+    console.log('uploadDocument response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Full upload error:', error.response?.data, error);
     throw error.response ? error.response.data : new Error('Network error');
   }
 };

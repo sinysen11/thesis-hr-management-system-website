@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8 flex justify-center"
-  >
+  <div class="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8 flex justify-center">
     <div class="max-w-4xl w-full bg-white shadow-lg rounded-lg p-6">
       <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
         Job Application Form
@@ -89,21 +87,16 @@
 
       <!-- Job Information -->
       <div class="mb-8">
-        <h3
-          class="text-xl font-semibold text-blue-600 mb-4 border-b-2 border-blue-500 pb-2"
-        >
+        <h3 class="text-xl font-semibold text-blue-600 mb-4 border-b-2 border-blue-500 pb-2">
           Job Information
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
-            <label
-              for="apply_position"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="apply_position" class="block text-sm font-medium text-gray-700 mb-1">
               Apply Position
             </label>
             <input
-              v-model="form.apply_position"
+              v-model="payload.apply_position"
               id="apply_position"
               type="text"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
@@ -111,22 +104,16 @@
               required
               readonly
             />
-            <p
-              v-if="showRequired && !form.apply_position"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.apply_position" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
           <div>
-            <label
-              for="requested_location"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="requested_location" class="block text-sm font-medium text-gray-700 mb-1">
               Requested Location
             </label>
             <input
-              v-model="form.requested_location"
+              v-model="payload.requested_location"
               id="requested_location"
               type="text"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
@@ -134,10 +121,7 @@
               required
               readonly
             />
-            <p
-              v-if="showRequired && !form.requested_location"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.requested_location" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
@@ -146,137 +130,99 @@
 
       <!-- Education Background -->
       <div class="mb-8">
-        <h3
-          class="text-xl font-semibold text-blue-600 mb-4 border-b-2 border-blue-500 pb-2"
-        >
+        <h3 class="text-xl font-semibold text-blue-600 mb-4 border-b-2 border-blue-500 pb-2">
           Education Background
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div>
-            <label
-              for="education_from_year"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="education_from_year" class="block text-sm font-medium text-gray-700 mb-1">
               From (Year)
             </label>
             <input
-              v-model="form.education_from_year"
+              v-model="payload.education_from_year"
               id="education_from_year"
               type="text"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               placeholder="e.g., 12-10-2022"
               required
             />
-            <p
-              v-if="showRequired && !form.education_from_year"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.education_from_year" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
           <div>
-            <label
-              for="education_to_year"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="education_to_year" class="block text-sm font-medium text-gray-700 mb-1">
               To (Year)
             </label>
             <input
-              v-model="form.education_to_year"
+              v-model="payload.education_to_year"
               id="education_to_year"
               type="text"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               placeholder="e.g., 12-10-2026"
               required
             />
-            <p
-              v-if="showRequired && !form.education_to_year"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.education_to_year" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
           <div>
-            <label
-              for="school_name"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="school_name" class="block text-sm font-medium text-gray-700 mb-1">
               School Name
             </label>
             <input
-              v-model="form.school_name"
+              v-model="payload.school_name"
               id="school_name"
               type="text"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               required
             />
-            <p
-              v-if="showRequired && !form.school_name"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.school_name" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
           <div>
-            <label
-              for="major"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="major" class="block text-sm font-medium text-gray-700 mb-1">
               Major
             </label>
             <input
-              v-model="form.major"
+              v-model="payload.major"
               id="major"
               type="text"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               required
             />
-            <p
-              v-if="showRequired && !form.major"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.major" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
           <div>
-            <label
-              for="degree"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="degree" class="block text-sm font-medium text-gray-700 mb-1">
               Degree
             </label>
             <input
-              v-model="form.degree"
+              v-model="payload.degree"
               id="degree"
               type="text"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               required
             />
-            <p
-              v-if="showRequired && !form.degree"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.degree" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
           <div>
-            <label
-              for="location"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="location" class="block text-sm font-medium text-gray-700 mb-1">
               Location
             </label>
             <input
-              v-model="form.location"
+              v-model="payload.location"
               id="location"
               type="text"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               required
             />
-            <p
-              v-if="showRequired && !form.location"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.location" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
@@ -285,86 +231,63 @@
 
       <!-- Experience -->
       <div class="mb-8">
-        <h3
-          class="text-xl font-semibold text-blue-600 mb-4 border-b-2 border-blue-500 pb-2"
-        >
+        <h3 class="text-xl font-semibold text-blue-600 mb-4 border-b-2 border-blue-500 pb-2">
           Experience
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div>
-            <label
-              for="start_date"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="start_date" class="block text-sm font-medium text-gray-700 mb-1">
               Start Date
             </label>
             <flat-pickr
-              v-model="form.start_date"
+              v-model="payload.start_date"
               :config="{ dateFormat: 'Y-m-d' }"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               placeholder="YYYY-MM-DD"
               required
             />
-            <p
-              v-if="showRequired && !form.start_date"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.start_date" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
           <div>
-            <label
-              for="end_date"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="end_date" class="block text-sm font-medium text-gray-700 mb-1">
               End Date
             </label>
             <flat-pickr
-              v-model="form.end_date"
+              v-model="payload.end_date"
               :config="{ dateFormat: 'Y-m-d' }"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               placeholder="YYYY-MM-DD"
             />
           </div>
           <div>
-            <label
-              for="position"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="position" class="block text-sm font-medium text-gray-700 mb-1">
               Position
             </label>
             <input
-              v-model="form.position"
+              v-model="payload.position"
               id="position"
               type="text"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               required
             />
-            <p
-              v-if="showRequired && !form.position"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.position" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
           <div>
-            <label
-              for="company"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="company" class="block text-sm font-medium text-gray-700 mb-1">
               Company
             </label>
             <input
-              v-model="form.company"
+              v-model="payload.company"
               id="company"
               type="text"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               required
             />
-            <p
-              v-if="showRequired && !form.company"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.company" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
@@ -373,53 +296,39 @@
 
       <!-- Salary -->
       <div class="mb-8">
-        <h3
-          class="text-xl font-semibold text-blue-600 mb-4 border-b-2 border-blue-500 pb-2"
-        >
+        <h3 class="text-xl font-semibold text-blue-600 mb-4 border-b-2 border-blue-500 pb-2">
           Salary
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
-            <label
-              for="salary_usd"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="salary_usd" class="block text-sm font-medium text-gray-700 mb-1">
               Current Salary (USD)
             </label>
             <input
-              v-model="form.salary_usd"
+              v-model="payload.salary_usd"
               id="salary_usd"
               type="text"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               placeholder="e.g., 600"
               required
             />
-            <p
-              v-if="showRequired && !form.salary_usd"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.salary_usd" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
           <div>
-            <label
-              for="expected_salary"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="expected_salary" class="block text-sm font-medium text-gray-700 mb-1">
               Expected Salary (USD)
             </label>
             <input
-              v-model="form.expected_salary"
+              v-model="payload.expected_salary"
               id="expected_salary"
               type="text"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               placeholder="e.g., 1000"
               required
             />
-            <p
-              v-if="showRequired && !form.expected_salary"
-              class="text-xs text-red-500 mt-1"
-            >
+            <p v-if="showRequired && !payload.expected_salary" class="text-xs text-red-500 mt-1">
               * Required
             </p>
           </div>
@@ -428,9 +337,7 @@
 
       <!-- Additional Questions -->
       <div class="mb-8">
-        <h3
-          class="text-xl font-semibold text-blue-600 mb-4 border-b-2 border-blue-500 pb-2"
-        >
+        <h3 class="text-xl font-semibold text-blue-600 mb-4 border-b-2 border-blue-500 pb-2">
           Additional Information
         </h3>
         <div class="space-y-6">
@@ -439,22 +346,18 @@
               Do you know someone at SunFlex? (optional)
             </label>
             <div class="flex space-x-6">
-              <label
-                class="flex items-center text-sm font-medium text-gray-700"
-              >
+              <label class="flex items-center text-sm font-medium text-gray-700">
                 <input
-                  v-model="form.knows_someone"
+                  v-model="payload.knows_someone"
                   type="radio"
                   :value="true"
                   class="mr-2 h-5 w-5 text-blue-600 focus:ring-blue-500"
                 />
                 Yes
               </label>
-              <label
-                class="flex items-center text-sm font-medium text-gray-700"
-              >
+              <label class="flex items-center text-sm font-medium text-gray-700">
                 <input
-                  v-model="form.knows_someone"
+                  v-model="payload.knows_someone"
                   type="radio"
                   :value="false"
                   class="mr-2 h-5 w-5 text-blue-600 focus:ring-blue-500"
@@ -463,33 +366,26 @@
               </label>
             </div>
             <input
-              v-if="form.knows_someone"
-              v-model="form.knows_someone_details"
+              v-if="payload.knows_someone"
+              v-model="payload.knows_someone_details"
               type="text"
               class="mt-4 block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               placeholder="Full name with position"
               required
             />
             <p
-              v-if="
-                showRequired &&
-                form.knows_someone &&
-                !form.knows_someone_details
-              "
+              v-if="showRequired && payload.knows_someone && !payload.knows_someone_details"
               class="text-xs text-red-500 mt-1"
             >
               * Required
             </p>
           </div>
           <div>
-            <label
-              for="why_apply"
-              class="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label for="why_apply" class="block text-sm font-medium text-gray-700 mb-1">
               Why do you want to apply with SunFlex? (optional)
             </label>
             <textarea
-              v-model="form.why_apply"
+              v-model="payload.why_apply"
               id="why_apply"
               class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200"
               rows="5"
@@ -501,9 +397,7 @@
 
       <!-- File Upload -->
       <div class="mb-8">
-        <h3
-          class="text-xl font-semibold text-blue-600 mb-4 border-b-2 border-blue-500 pb-2"
-        >
+        <h3 class="text-xl font-semibold text-blue-600 mb-4 border-b-2 border-blue-500 pb-2">
           Upload Your CV
         </h3>
         <div class="flex items-center space-x-6">
@@ -515,10 +409,7 @@
             required
             accept=".pdf,.doc,.docx"
           />
-          <p
-            v-if="showRequired && !form.resume"
-            class="text-xs text-red-500 mt-1"
-          >
+          <p v-if="showRequired && !payload.resume" class="text-xs text-red-500 mt-1">
             * Required
           </p>
           <button
@@ -529,8 +420,8 @@
             {{ isSubmitting ? 'Submitting...' : 'Submit' }}
           </button>
         </div>
-        <p v-if="form.resume" class="mt-4 text-sm text-gray-600">
-          Selected file: {{ form.resume.name }}
+        <p v-if="payload.resume" class="mt-4 text-sm text-gray-600">
+          Selected file: {{ payload.resume.name }}
         </p>
         <p v-else class="mt-4 text-sm text-gray-600">No file selected</p>
       </div>
@@ -541,14 +432,15 @@
 <script>
 import FlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
-import { submitApplicant } from '@/services/jobs';
+import axios from 'axios'; // Assuming axios is used; adjust if using another HTTP client
+import { submitApplicant } from '@/services/jobs'; // Adjust the import path as necessary
 
 export default {
   name: 'JobApplicantForm',
   components: { FlatPickr },
   data() {
     return {
-      form: {
+      payload: {
         applicant: '',
         jobId: '',
         apply_position: '',
@@ -568,7 +460,7 @@ export default {
         knows_someone: null,
         knows_someone_details: '',
         why_apply: '',
-        resume: null,
+        resume: '',
         token: ''
       },
       isSubmitting: false,
@@ -586,53 +478,53 @@ export default {
     },
     prefillForm() {
       const query = this.$route.query;
-      this.form.jobId = this.normalizeId(query.jobId || '');
-      this.form.apply_position = query.apply_position || 'N/A';
-      this.form.requested_location = query.branch || 'N/A';
+      this.payload.jobId = this.normalizeId(query.jobId || '');
+      this.payload.apply_position = query.apply_position || 'N/A';
+      this.payload.requested_location = query.branch || 'N/A';
       const user = JSON.parse(localStorage.getItem('user') || '{}');
-      this.form.applicant = this.normalizeId(user?.data?.userId || '');
-      this.form.token = (localStorage.getItem('token') || '').trim();
+      this.payload.applicant = this.normalizeId(user?.data?.userId || '');
+      this.payload.token = (localStorage.getItem('token') || '').trim();
     },
     handleFileUpload(event) {
       const file = event.target.files[0];
-      this.form.resume = file || null;
+      console.log('File selected:', { file: file ? file.name : 'none', size: file ? file.size : null, type: file ? file.type : null });
+      this.payload.resume = file || null;
     },
     async submitForm() {
-      this.showRequired = true; // Show required indicators on submit attempt
+      this.showRequired = true;
 
       // Validation
-      if (!this.form.resume) {
+      if (!this.payload.resume) {
         this.errorMessage = 'Please upload a CV.';
         return;
       }
       if (
-        !this.form.jobId ||
-        !this.form.apply_position ||
-        !this.form.applicant ||
-        !this.form.token
+        !this.payload.jobId ||
+        !this.payload.apply_position ||
+        !this.payload.applicant ||
+        !this.payload.token
       ) {
         this.errorMessage = 'Missing required job, user, or token information.';
         return;
       }
       if (
-        !this.form.education_from_year ||
-        !this.form.education_to_year ||
-        !this.form.school_name ||
-        !this.form.major ||
-        !this.form.degree ||
-        !this.form.location ||
-        !this.form.start_date ||
-        !this.form.position ||
-        !this.form.company ||
-        !this.form.salary_usd ||
-        !this.form.expected_salary
+        !this.payload.education_from_year ||
+        !this.payload.education_to_year ||
+        !this.payload.school_name ||
+        !this.payload.major ||
+        !this.payload.degree ||
+        !this.payload.location ||
+        !this.payload.start_date ||
+        !this.payload.position ||
+        !this.payload.company ||
+        !this.payload.salary_usd ||
+        !this.payload.expected_salary
       ) {
         this.errorMessage = 'Please fill out all required fields.';
         return;
       }
-      if (this.form.knows_someone && !this.form.knows_someone_details) {
-        this.errorMessage =
-          'Please provide details if you know someone at SunFlex.';
+      if (this.payload.knows_someone && !this.payload.knows_someone_details) {
+        this.errorMessage = 'Please provide details if you know someone at SunFlex.';
         return;
       }
 
@@ -640,71 +532,101 @@ export default {
       this.errorMessage = '';
       this.successMessage = '';
 
-      const formData = new FormData();
-      formData.append('applicant', this.form.applicant);
-      formData.append('jobId', this.form.jobId);
-      formData.append('apply_position', this.form.apply_position);
-      formData.append('requested_location', this.form.requested_location);
-      formData.append('education_from_year', this.form.education_from_year);
-      formData.append('education_to_year', this.form.education_to_year);
-      formData.append('school_name', this.form.school_name);
-      formData.append('major', this.form.major);
-      formData.append('degree', this.form.degree);
-      formData.append('location', this.form.location);
-      formData.append('start_date', this.form.start_date);
-      formData.append('end_date', this.form.end_date || '');
-      formData.append('position', this.form.position);
-      formData.append('company', this.form.company);
-      formData.append('salary_usd', this.form.salary_usd);
-      formData.append('expected_salary', this.form.expected_salary);
-      formData.append(
-        'knows_someone',
-        this.form.knows_someone === null
-          ? ''
-          : this.form.knows_someone.toString()
-      );
-      formData.append(
-        'knows_someone_details',
-        this.form.knows_someone ? this.form.knows_someone_details : ''
-      );
-      formData.append('why_apply', this.form.why_apply || '');
-      if (this.form.resume) {
-        formData.append('resume', this.form.resume, this.form.resume.name);
-      }
-
-      // Debug FormData
-      for (const [key, value] of formData.entries()) {
-        console.log(
-          `FormData: ${key} = ${value instanceof File ? value.name : value}`
-        );
-      }
-
       try {
-        const response = await submitApplicant(formData, this.form.token);
-        console.log('API response:', response);
-        if (response && response.status === 1) {
-          this.successMessage =
-            response.message || 'Application submitted successfully!';
-          this.resetForm();
-          setTimeout(() => {
-            this.$router.push('/career');
-          }, 2000);
+        // Step 1: Upload the resume file as binary
+        const fileData = await this.payload.resume.arrayBuffer(); // Convert file to binary
+        console.log('Upload request details:', {
+          fileName: this.payload.resume.name,
+          fileSize: this.payload.resume.size,
+          fileType: this.payload.resume.type
+        });
+
+        const uploadResponse = await axios.post(
+          'https://thesis-posting-and-leave-request-api.onrender.com/api/v1/document',
+          fileData,
+          {
+            headers: {
+              'Authorization': `Bearer ${this.payload.token}`,
+              'Content-Type': this.payload.resume.type || 'application/octet-stream'
+            }
+          }
+        );
+        console.log('Upload response (raw):', JSON.stringify(uploadResponse.data, null, 2));
+
+        if (uploadResponse.data && uploadResponse.data.status === 1) {
+          // Extract document_id with explicit fallback
+          let documentId = uploadResponse.data.data?.document_id;
+          if (!documentId) {
+            documentId = uploadResponse.data.document?._id ||
+                        uploadResponse.data.document_id ||
+                        uploadResponse.data.id;
+          }
+          if (!documentId) {
+            this.errorMessage = 'Failed to retrieve document ID from upload response.';
+            return;
+          }
+          this.payload.resume = documentId;
+          console.log('Extracted resume:', this.payload.resume); // Verify resume
+
+          // Step 2: Prepare JSON payload for applicant submission
+          const applicantData = {
+            applicant: this.payload.applicant,
+            jobId: this.payload.jobId,
+            apply_position: this.payload.apply_position,
+            requested_location: this.payload.requested_location,
+            education_from_year: this.payload.education_from_year,
+            education_to_year: this.payload.education_to_year,
+            school_name: this.payload.school_name,
+            major: this.payload.major,
+            degree: this.payload.degree,
+            location: this.payload.location,
+            start_date: this.payload.start_date,
+            end_date: this.payload.end_date || '',
+            position: this.payload.position,
+            company: this.payload.company,
+            salary_usd: this.payload.salary_usd,
+            expected_salary: this.payload.expected_salary,
+            knows_someone: this.payload.knows_someone === null ? '' : this.payload.knows_someone.toString(),
+            knows_someone_details: this.payload.knows_someone ? this.payload.knows_someone_details : '',
+            why_apply: this.payload.why_apply || '',
+            resume: this.payload.resume // Ensure this is included
+          };
+
+          // Debug the final request payload
+          console.log('Final applicant request:', JSON.stringify(applicantData, null, 2));
+
+          // Step 3: Submit applicant data
+          const response = await submitApplicant(applicantData, this.payload.token);
+          console.log('Submit response:', JSON.stringify(response, null, 2));
+
+          if (response && response.status === 1) {
+            this.successMessage = response.message || 'Application submitted successfully!';
+            this.resetForm();
+            setTimeout(() => {
+              console.log('Attempting to redirect to /career');
+              if (this.$router) {
+                this.$router.push('/career').catch(err => {
+                  console.error('Redirection error:', err);
+                });
+              } else {
+                console.error('Router is not available');
+              }
+            }, 2000);
+          } else {
+            this.errorMessage = response.message || 'Failed to submit application. Please try again.';
+          }
         } else {
-          this.errorMessage =
-            response.message ||
-            'Failed to submit application. Please try again.';
+          this.errorMessage = uploadResponse.data.message || 'Failed to upload resume. Please try again.';
         }
       } catch (error) {
-        console.error('Error submitting application:', error);
-        this.errorMessage =
-          error.message ||
-          'An error occurred while submitting your application.';
+        console.error('Error submitting application:', error, error.response?.data);
+        this.errorMessage = error.message || 'An error occurred while submitting your application.';
       } finally {
         this.isSubmitting = false;
       }
     },
     resetForm() {
-      this.form = {
+      this.payload = {
         applicant: '',
         jobId: '',
         apply_position: '',
@@ -724,11 +646,14 @@ export default {
         knows_someone: null,
         knows_someone_details: '',
         why_apply: '',
-        resume: null,
+        resume: '',
         token: ''
       };
-      this.showRequired = false; // Reset required indicators on form reset
-      document.getElementById('cv_file').value = '';
+      this.showRequired = false;
+      const fileInput = document.getElementById('cv_file');
+      if (fileInput) {
+        fileInput.value = ''; // Clear file input
+      }
     }
   }
 };
