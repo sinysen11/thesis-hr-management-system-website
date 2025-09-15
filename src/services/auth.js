@@ -17,3 +17,19 @@ export const register = async (data) => {
     throw error.response ? error.response.data : new Error('Network error');
   }
 };
+export const forgotPassword = async (data) => {
+  try {
+    const response = await api.post('/applicant/forgot-password', data);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error('Network error');
+  }
+};
+export const resetPassword = async (data) => {
+  try {
+    const response = await api.post('/applicant/reset-password', data);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error('Network error');
+  }
+};

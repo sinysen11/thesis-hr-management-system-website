@@ -50,7 +50,7 @@
           </div>
           <div class="text-right mt-1">
             <RouterLink
-              to="/signup"
+              to="/forgot-password"
               class="text-sm text-[#2e6d56] hover:underline"
               >Forget password?</RouterLink
             >

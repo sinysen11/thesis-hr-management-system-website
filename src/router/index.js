@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import MainLayout from '@/layouts/MainLayout.vue';
 import Login from '@/views/login';
 import SignUp from '@/views/signUp';
+import ForgotPassword from '@/views/forgot_password';
+import ResetPassword from '@/views/reset_password';
 import Home from '@/views/home/index.vue';
 import Career from '@/views/Jobs';
 import JobDetails from '@/views/Jobs/components/JobDetails.vue';
@@ -18,6 +20,16 @@ const routes = [
     path: '/signup',
     name: 'SignUp',
     component: SignUp
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: ForgotPassword
+  },
+  {
+    path: '/website/reset-password',
+    name: 'ResetPassword',
+    component: ResetPassword
   },
   {
     path: '/',
