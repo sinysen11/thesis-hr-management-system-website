@@ -1,8 +1,7 @@
 <template>
   <div class="flex h-screen">
-    <!-- <Nav /> -->
     <div class="flex-1 flex flex-col">
-      <Header />
+      <!-- <Header /> -->
       <main class="flex-1 overflow-auto">
         <router-view />
       </main>
@@ -11,13 +10,26 @@
 </template>
 
 <script>
-// import Nav from '@/components/Nav.vue';
-import Header from '@/components/Header.vue';
+// import Header from '@/components/Header.vue';
 
 export default {
   components: {
-    // Nav,
-    Header
+    // Header
   }
 };
 </script>
+
+<style scoped>
+/* Ensure layout takes full height and handles overflow */
+.h-screen {
+  min-height: 100vh;
+}
+
+.flex-1 {
+  flex: 1 1 auto;
+}
+
+.overflow-auto {
+  overflow-y: auto;
+}
+</style>

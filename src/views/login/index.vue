@@ -1,7 +1,44 @@
+```vue
 <template>
   <div
-    class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+    class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-100"
   >
+    <!-- Loading Modal -->
+    <div
+      v-if="isLoading"
+      class="fixed inset-0 bg-gray-900/40 flex items-center justify-center z-50"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Loading"
+    >
+      <div
+        class="bg-white bg-opacity-90 rounded-lg p-6 flex flex-col items-center space-y-4 shadow-lg animate-fade-in"
+      >
+        <div
+          class="w-12 h-12 border-4 border-t-[#2e6d56] border-gray-200 rounded-full animate-spin"
+        ></div>
+        <p class="text-[#2e6d56] font-medium text-sm">Logging in, please wait...</p>
+      </div>
+    </div>
+
+    <!-- Alert -->
+    <div
+      v-if="errorMessage"
+      class="fixed top-4 right-4 max-w-sm w-full bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-md shadow-md animate-slide-in"
+      role="alert"
+    >
+      <div class="flex justify-between items-center">
+        <p class="text-sm">{{ errorMessage }}</p>
+        <button
+          @click="errorMessage = ''"
+          class="text-red-700 hover:text-red-900 focus:outline-none"
+          aria-label="Close alert"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
       <!-- Logo Section -->
       <div class="text-center mb-6">
@@ -59,18 +96,12 @@
 
         <button
           type="submit"
-          class="w-full bg-[#2e6d56] text-white py-2 rounded-md hover:bg-[#245c48] transition text-sm font-medium"
+          class="w-full bg-[#2e6d56] text-white py-2 rounded-md hover:bg-[#245c48] transition text-sm font-medium disabled:opacity-50"
           :disabled="isLoading"
         >
-          <span v-if="isLoading">Logging in...</span>
-          <span v-else>Login</span>
+          Login
         </button>
       </form>
-
-      <!-- Error Message -->
-      <p v-if="errorMessage" class="text-red-500 text-sm mt-2 text-center">
-        {{ errorMessage }}
-      </p>
 
       <!-- Sign Up Link -->
       <div class="text-center mt-4 text-sm text-gray-700">
@@ -90,7 +121,6 @@ import { login } from '@/services/auth';
 
 export default {
   name: 'Login',
-  components: {},
   data() {
     return {
       email: '',
@@ -139,3 +169,37 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+/* Custom animations for loading modal and alert */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+</style>
+```
