@@ -17,19 +17,19 @@
         Loading job details...
       </div>
       <div v-else-if="job" class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-2xl font-bold text-green-600 mb-4">
+        <h2 class="text-2xl font-bold text-[#2e6d56] mb-4">
           {{ job.title.des_en }}
         </h2>
         <div class="flex items-center text-sm text-gray-600 mb-4">
-          <span>{{ job.type }}</span>
-          <span class="mx-2">•</span>
-          <span>{{ job.branch }}</span>
-          <span class="mx-2">•</span>
-          <span>Posted {{ timeAgo(job.postedDate) }}</span>
-          <span v-if="job.department.name_en" class="mx-2">•</span>
-          <span v-if="job.department.name_en" class="text-blue-500">{{ job.department.name_en }}</span>
-          <span class="mx-2">•</span>
-          <span>Staff Needed: {{ job.number_staff }}</span>
+          <p class="text-gray-700">
+            <span><i class="fa fa-calendar-check" aria-hidden="true"></i> {{ daysLeft(job.close_date) }}</span> 
+            <span class="mx-2"> </span>
+          </p>
+          <span><i class="fa fa-map-marker" aria-hidden="true"></i> {{ job.branch }}</span>
+          <span class="mx-2"> </span>
+          <span> <i class="fa fa-calendar-check" aria-hidden="true"></i> Posted {{ timeAgo(job.postedDate) }}</span>
+          <span class="mx-2">-</span>
+          <span>({{ job.number_staff }} Post)</span>
         </div>
         <div class="mb-6">
           <h3 class="text-lg font-semibold mb-2">Job Summary:</h3>
@@ -51,23 +51,6 @@
             </li>
           </ul>
         </div>
-        <div class="mb-6">
-          <h3 class="text-lg font-semibold mb-2">Additional Information</h3>
-          <p class="text-gray-700">
-            <span class="font-semibold">Salary:</span> {{ job.salary }}
-          </p>
-          <p class="text-gray-700">
-            <span class="font-semibold">Publish Date:</span>
-            {{ formatDate(job.publish_date) }}
-          </p>
-          <p class="text-gray-700">
-            <span class="font-semibold">Close Date:</span>
-            {{ formatDate(job.close_date) }}
-          </p>
-          <p class="text-gray-700">
-            <span class="font-semibold">Benefits:</span> {{ job.benefits }}
-          </p>
-        </div>
         <router-link
           to="/career"
           class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200"
@@ -87,7 +70,7 @@
 </template>
 
 <script>
-import { formatDistanceToNow, format } from 'date-fns';
+import { formatDistanceToNow, format, differenceInDays } from 'date-fns';
 import { getJobById } from '@/services/jobs';
 
 export default {
@@ -157,6 +140,20 @@ export default {
     },
     formatDate(date) {
       return date ? format(new Date(date), 'MMM dd, yyyy') : 'N/A';
+    },
+    daysLeft(date) {
+      if (!date) return 'N/A';
+      const today = new Date();
+      const close = new Date(date);
+      const diff = differenceInDays(close, today);
+
+      if (diff > 0) {
+        return `Expire in ${diff} day${diff > 1 ? 's ' : ' '}`;
+      } else if (diff === 0) {
+        return 'Expire today';
+      } else {
+        return 'Expired';
+      }
     },
     applyJob() {
       const isLoggedIn = !!localStorage.getItem('token');
