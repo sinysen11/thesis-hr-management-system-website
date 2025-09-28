@@ -126,6 +126,7 @@
             </div>
             <router-link to="/career" class="text-gray-700 hover:text-blue-800 font-medium" :class="{ 'text-blue-800 font-bold': $route.path.includes('/career') }">Careers</router-link>
             <router-link to="/about-us" class="text-gray-700 hover:text-blue-800 font-medium" :class="{ 'text-blue-800 font-bold': $route.path === '/about-us' }">About Us</router-link>
+            <router-link to="/our-partner" class="text-gray-700 hover:text-blue-800 font-medium" :class="{ 'text-blue-800 font-bold': $route.path === '/our-partner' }">Our Partner</router-link>
             <router-link to="/login" class="text-gray-700 hover:text-blue-800">
               <i class="fas fa-user text-xl"></i>
             </router-link>

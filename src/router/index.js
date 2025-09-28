@@ -1,3 +1,4 @@
+// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import MainLayout from '@/layouts/DefaultLayout.vue';
 import Login from '@/views/login';
@@ -10,7 +11,9 @@ import JobDetails from '@/views/Jobs/components/JobDetails.vue';
 import AboutUs from '@/views/aboutUs';
 import Applicant from '@/views/applicants';
 import ProductDetail from '@/components/ProductDetail.vue';
-
+import ProductTabDetail from '@/components/ProductTabDetail.vue';
+import NotFound from '@/components/NotFound.vue'; // Add a 404 component
+import OurPartner from '@/views/our_partner';
 const routes = [
   {
     path: '/login',
@@ -37,11 +40,14 @@ const routes = [
     component: MainLayout,
     children: [
       { path: '', name: 'Dashboard', component: Home },
-      { path: '/career', name: 'Career', component: Career },
-      { path: '/career/job-detail', name: 'JobDetail', component: JobDetails },
-      { path: '/about-us', name: 'AboutUs', component: AboutUs },
-      { path: '/career/applicant', name: 'Applicant', component: Applicant },
-      { path: '/products/:slug', component: ProductDetail, name: 'ProductDetail', props: true }
+      { path: 'career', name: 'Career', component: Career },
+      { path: 'career/job-detail', name: 'JobDetail', component: JobDetails },
+      { path: 'about-us', name: 'AboutUs', component: AboutUs },
+      { path: 'our-partner', name: 'OurPartner', component: OurPartner },
+      { path: 'career/applicant', name: 'Applicant', component: Applicant },
+      { path: 'products/:slug?', name: 'ProductDetail', component: ProductDetail, props: true },
+      { path: 'products/detail/:id', name: 'ProductTabDetail', component: ProductTabDetail, props: true },
+      { path: ':pathMatch(.*)*', name: 'NotFound', component: NotFound } // Fallback for 404
     ]
   }
 ];
