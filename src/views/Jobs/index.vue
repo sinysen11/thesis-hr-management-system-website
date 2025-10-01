@@ -1,15 +1,28 @@
-```vue
 <template>
   <div class="careers bg-white font-roboto">
+    <img
+      src="@/assets/images/4_files/our_career.webp"
+      alt="Partners Banner"
+      class="w-full h-auto"
+    />
     <!-- Google Tag Manager (noscript) -->
     <noscript>
-      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2GWKJ7" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-P2GWKJ7"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
     <!-- Browser Compatibility Warning -->
     <!--[if lt IE 8]>
-      <p class="ancient-browser-alert text-center p-4 bg-red-100 text-red-700">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="_blank" class="underline">upgrade your browser</a>.</p>
+      <p class="ancient-browser-alert text-center p-4 bg-red-100 text-red-700">
+        You are using an <strong>outdated</strong> browser. Please <a
+        href="http://browsehappy.com/" target="_blank" class="underline">upgrade your
+        browser</a>.
+      </p>
     <![endif]-->
 
     <!-- Main Content -->
@@ -51,9 +64,9 @@
       </div>
 
       <!-- Filter Section -->
-      <div class="bg-blue-100 p-4 rounded-lg mb-6 shadow-md">
+      <div class="p-4 rounded-lg shadow-md">
         <div
-          class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4"
+          class="flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-4 w-1/2 mx-auto"
         >
           <div class="flex-1 w-full md:w-auto">
             <input
@@ -172,10 +185,14 @@ export default {
       }
       return this.jobs.filter(
         (job) =>
-          job.title.toLowerCase().includes(query) ||
-          job.description.toLowerCase().includes(query) ||
-          job.department.toLowerCase().includes(query) ||
-          job.branch.toLowerCase().includes(query)
+          job.title?.des_en?.toLowerCase()?.includes(query) ||
+          false ||
+          job.description?.toLowerCase()?.includes(query) ||
+          false ||
+          job.department?.des_en?.toLowerCase()?.includes(query) ||
+          false ||
+          job.branch?.toLowerCase()?.includes(query) ||
+          false
       );
     }
   },
@@ -189,7 +206,7 @@ export default {
           : new Date();
         return {
           id: apiJob._id,
-          title: apiJob.title || apiJob.type,
+          title: apiJob.title || { des_en: apiJob.type || 'N/A' },
           type: apiJob.type || 'N/A',
           salary: apiJob.salary || 'N/A',
           description: apiJob.description || 'N/A',
@@ -197,11 +214,9 @@ export default {
           requirement: apiJob.requirement || 'N/A',
           postedDate: postedDate,
           location: apiJob.branch || 'N/A',
-          department: apiJob.department || 'N/A',
+          department: apiJob.department || { des_en: 'N/A' }, // Normalize department to object
           number_staff: apiJob.number_staff || 'N/A',
-          publish_date: apiJob.publish_date
-            ? new Date(apiJob.publish_date)
-            : null,
+          publish_date: apiJob.publish_date ? new Date(apiJob.publish_date) : null,
           close_date: apiJob.close_date ? new Date(apiJob.close_date) : null,
           branch: apiJob.branch || 'N/A',
           benefits: apiJob.benefits || 'N/A',
@@ -241,8 +256,8 @@ export default {
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Roboto';
-  src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=block');
+  font-family: "Roboto";
+  src: url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=block");
 }
 
 .careers {
@@ -285,4 +300,3 @@ export default {
   transition: transform 0.2s;
 }
 </style>
-```

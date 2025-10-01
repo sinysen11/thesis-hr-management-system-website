@@ -39,7 +39,7 @@
             <li
               v-for="(slide, index) in slides"
               :key="index"
-              :class="{ 'bg-blue-800': currentIndex === index, 'bg-white': currentIndex !== index }"
+              :class="{ 'bg-[#2d6f54]': currentIndex === index, 'bg-white': currentIndex !== index }"
               class="w-3 h-3 rounded-full cursor-pointer border-2 border-white"
               @click="goToSlide(index)"
             ></li>
@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <div class="bludemenus bg-blue-800 py-4">
+      <div class="bludemenus bg-[#2d6f54] py-4">
         <div class="container mx-auto flex items-center px-4">
           <button class="mneulink mr-4" @click="toggleBlueMenu">
             <img src="@/assets/images/4_files/menuw.svg" alt="menu" title="menu" class="w-8">
@@ -69,7 +69,7 @@
 
       <div class="container mx-auto py-8">
         <header class="text-center mb-8">
-          <h1 class="text-4xl font-bold text-blue-800">Product</h1>
+          <h1 class="text-4xl font-bold text-[#2d6f54]">Product</h1>
         </header>
         <div class="text-center mb-8">
           <h2 class="text-3xl font-bold">Welcome to <strong>SunFlex (Cambodia) Co.,Ltd</strong>.</h2>

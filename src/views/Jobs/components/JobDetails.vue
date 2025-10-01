@@ -1,5 +1,10 @@
 <template>
   <div class="job-detail bg-white font-roboto">
+    <img
+      src="@/assets/images/4_files/our_career.webp"
+      alt="Partners Banner"
+      class="w-full h-auto"
+    />
     <!-- Google Tag Manager (noscript) -->
     <noscript>
       <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P2GWKJ7" height="0" width="0" style="display:none;visibility:hidden"></iframe>
@@ -58,7 +63,7 @@
           Back
         </router-link>
         <button
-          class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200 ml-4"
+          class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-[#2d6f54] transition duration-200 ml-4"
           @click="applyJob"
         >
           Apply

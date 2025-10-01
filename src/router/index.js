@@ -14,6 +14,7 @@ import ProductDetail from '@/components/ProductDetail.vue';
 import ProductTabDetail from '@/components/ProductTabDetail.vue';
 import NotFound from '@/components/NotFound.vue'; // Add a 404 component
 import OurPartner from '@/views/our_partner';
+import ProductPage from '@/components/ProductPage.vue';
 const routes = [
   {
     path: '/login',
@@ -47,7 +48,12 @@ const routes = [
       { path: 'career/applicant', name: 'Applicant', component: Applicant },
       { path: 'products/:slug?', name: 'ProductDetail', component: ProductDetail, props: true },
       { path: 'products/detail/:id', name: 'ProductTabDetail', component: ProductTabDetail, props: true },
-      { path: ':pathMatch(.*)*', name: 'NotFound', component: NotFound } // Fallback for 404
+      { path: ':pathMatch(.*)*', name: 'NotFound', component: NotFound }, // Fallback for 404
+      {
+        path: 'products/:slug',
+        name: 'ProductDetail',
+        component: ProductPage
+      }
     ]
   }
 ];
