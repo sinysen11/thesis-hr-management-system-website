@@ -1,3 +1,4 @@
+
 import api from './api';
 
 export const getAllMainContent = async (data) => {
@@ -8,9 +9,19 @@ export const getAllMainContent = async (data) => {
     throw error.response ? error.response.data : new Error('Network error');
   }
 };
+
 export const getAllTabContent = async (slug) => {
   try {
     const response = await api.get(`/website/main-content/tabs/${slug}`);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error('Network error');
+  }
+};
+
+export const getOneImage = async (id) => {
+  try {
+    const response = await api.get(`/document/${id}`);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error('Network error');

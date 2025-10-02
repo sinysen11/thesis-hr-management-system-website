@@ -80,11 +80,7 @@
             <!-- Image -->
             <div class="w-full md:w-1/2 p-6">
               <img
-                :src="
-                  item.images && item.images.length
-                    ? `/images/${item.images[0]}`
-                    : '/images/placeholder.png'
-                "
+                :src="item.imageUrl || '/images/placeholder.png'"
                 :alt="item.title"
                 class="w-full h-auto object-cover rounded-lg"
               />
@@ -97,11 +93,11 @@
               <p class="text-gray-700 mb-4 leading-relaxed">{{ item.description }}</p>
               <button
                 @click="toggleTabContent(item.id, item.title, item.description)"
-                class="inline-block bg-[#2d6f54] text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200"
+                class="inline-block bg-[#2d6f54] text-white px-6 py-2 rounded-md hover:bg-[#245c48] transition-colors duration-200"
                 :aria-expanded="activeTabId === item.id"
                 :aria-controls="'tab-content-' + item.id"
               >
-                {{ activeTabId === item.id ? "Close" : "Read More" }}
+                {{ activeTabId === item.id ? 'Close' : 'Read More' }}
               </button>
             </div>
           </div>
@@ -130,16 +126,18 @@
       </div>
       <p v-if="isLoading" class="text-center text-gray-500">Loading products...</p>
       <p v-if="error" class="text-center text-red-500">{{ error }}</p>
+      <p v-if="imageError" class="text-center text-red-500 mt-4">{{ imageError }}</p>
     </div>
   </div>
 </template>
 
 <script>
-import { getAllMainContent, getAllTabContent } from '@/services/product-solution';
+import { getAllMainContent, getAllTabContent, getOneImage } from '@/services/product-solution';
 import image1 from '@/assets/images/banner1.png';
 import image2 from '@/assets/images/banner4.png';
 import image3 from '@/assets/images/banner3.png';
 import image4 from '@/assets/images/banner4.png';
+
 export default {
   name: 'ProductPage',
   data() {
@@ -153,6 +151,7 @@ export default {
       isTabLoading: false,
       error: null,
       tabError: null,
+      imageError: null,
       currentIndex: 0,
       isMobileMenuOpen: false,
       isProductsMenuOpen: false,
@@ -189,19 +188,39 @@ export default {
     async fetchMainContents() {
       this.isLoading = true;
       this.error = null;
+      this.imageError = null;
       try {
         const response = await getAllMainContent();
         if (response && response.status === 1 && response.data) {
-          this.mainContents = response.data
-            .filter((item) => item.status === 'ACTIVE')
-            .map((item) => ({
-              id: item._id,
-              type: item.type,
-              title: item.title,
-              slug: item.title.toLowerCase().replace(/\s+/g, '-'),
-              description: item.description,
-              images: item.images
-            }));
+          this.mainContents = await Promise.all(
+            response.data
+              .filter((item) => item.status === 'ACTIVE')
+              .map(async (item) => {
+                let imageUrl = '/images/placeholder.png';
+                if (item.images && item.images.length > 0) {
+                  try {
+                    const imageResponse = await getOneImage(item.images[0]);
+                    if (imageResponse && imageResponse.status === 1 && imageResponse.data?.url) {
+                      imageUrl = imageResponse.data.url;
+                    } else {
+                      console.warn(`No valid image URL for item ${item.title}`);
+                    }
+                  } catch (imageError) {
+                    console.error(`Error fetching image for ${item.title}:`, imageError);
+                    this.imageError = 'Some images failed to load. Using placeholder images.';
+                  }
+                }
+                return {
+                  id: item._id,
+                  type: item.type,
+                  title: item.title,
+                  slug: item.title.toLowerCase().replace(/\s+/g, '-'),
+                  description: item.description,
+                  images: item.images,
+                  imageUrl
+                };
+              })
+          );
         } else {
           this.error = 'No active products found';
         }
@@ -293,7 +312,6 @@ export default {
     this.startAutoPlay();
     this.initAnimations();
     this.fetchMainContents();
-    this.fetchMainContents();
     // Scroll to section if slug is provided in route
     this.$nextTick(() => {
       const slug = this.$route.params.slug;
@@ -306,6 +324,9 @@ export default {
         }
       }
     });
+  },
+  beforeUnmount() {
+    this.stopAutoPlay();
   }
 };
 </script>
@@ -316,8 +337,8 @@ export default {
 @tailwind utilities;
 
 @font-face {
-  font-family: "Roboto";
-  src: url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=block");
+  font-family: 'Roboto';
+  src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=block');
 }
 
 .product-page {

@@ -15,6 +15,7 @@ import ProductTabDetail from '@/components/ProductTabDetail.vue';
 import NotFound from '@/components/NotFound.vue'; // Add a 404 component
 import OurPartner from '@/views/our_partner';
 import ProductPage from '@/components/ProductPage.vue';
+import ContactUs from '@/views/contact_us';
 const routes = [
   {
     path: '/login',
@@ -45,6 +46,7 @@ const routes = [
       { path: 'career/job-detail', name: 'JobDetail', component: JobDetails },
       { path: 'about-us', name: 'AboutUs', component: AboutUs },
       { path: 'our-partner', name: 'OurPartner', component: OurPartner },
+      { path: 'contact-us', name: 'ContactUs', component: ContactUs },
       { path: 'career/applicant', name: 'Applicant', component: Applicant },
       { path: 'products/:slug?', name: 'ProductDetail', component: ProductDetail, props: true },
       { path: 'products/detail/:id', name: 'ProductTabDetail', component: ProductTabDetail, props: true },
