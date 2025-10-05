@@ -1,4 +1,3 @@
-```vue
 <template>
   <div class="job-applicant bg-white font-roboto">
     <!-- Google Tag Manager (noscript) -->
@@ -115,7 +114,6 @@
                 type="text"
                 class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-[#2e6d56] focus:ring-2 focus:ring-[#2e6d56] transition duration-200"
                 placeholder="Enter job title"
-                required
                 readonly
               />
               <p v-if="showRequired && !payload.apply_position" class="text-xs text-red-500 mt-1">
@@ -132,7 +130,6 @@
                 type="text"
                 class="block w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-900 focus:border-[#2e6d56] focus:ring-2 focus:ring-[#2e6d56] transition duration-200"
                 placeholder="Enter branch location"
-                required
                 readonly
               />
               <p v-if="showRequired && !payload.requested_location" class="text-xs text-red-500 mt-1">
@@ -420,12 +417,8 @@
               type="file"
               @change="handleFileUpload"
               class="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-6 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#2e6d56] file:text-white hover:file:bg-[#245c48] transition duration-200"
-              required
               accept=".pdf,.doc,.docx"
             />
-            <p v-if="showRequired && !payload.resume" class="text-xs text-red-500 mt-1">
-              * Required
-            </p>
             <button
               @click="submitForm"
               class="bg-[#2e6d56] text-white py-2 px-6 rounded-lg hover:bg-[#245c48] focus:outline-none focus:ring-2 focus:ring-[#2e6d56] transition duration-200"
@@ -511,10 +504,6 @@ export default {
       this.showRequired = true;
 
       // Validation
-      if (!this.payload.resume) {
-        this.errorMessage = 'Please upload a CV.';
-        return;
-      }
       if (
         !this.payload.jobId ||
         !this.payload.apply_position ||
@@ -550,90 +539,91 @@ export default {
       this.successMessage = '';
 
       try {
-        // Step 1: Upload the resume file as binary
-        const fileData = await this.payload.resume.arrayBuffer();
-        console.log('Upload request details:', {
-          fileName: this.payload.resume.name,
-          fileSize: this.payload.resume.size,
-          fileType: this.payload.resume.type
-        });
+        let documentId = '';
+        if (this.payload.resume) {
+          // Step 1: Upload the resume file as binary if a file is provided
+          const fileData = await this.payload.resume.arrayBuffer();
+          console.log('Upload request details:', {
+            fileName: this.payload.resume.name,
+            fileSize: this.payload.resume.size,
+            fileType: this.payload.resume.type
+          });
 
-        const uploadResponse = await axios.post(
-          'https://thesis-posting-and-leave-request-api.onrender.com/api/v1/document',
-          fileData,
-          {
-            headers: {
-              'Authorization': `Bearer ${this.payload.token}`,
-              'Content-Type': this.payload.resume.type || 'application/octet-stream'
+          const uploadResponse = await axios.post(
+            'https://thesis-posting-and-leave-request-api.onrender.com/api/v1/document',
+            fileData,
+            {
+              headers: {
+                'Authorization': `Bearer ${this.payload.token}`,
+                'Content-Type': this.payload.resume.type || 'application/octet-stream'
+              }
             }
-          }
-        );
-        console.log('Upload response (raw):', JSON.stringify(uploadResponse.data, null, 2));
+          );
+          console.log('Upload response (raw):', JSON.stringify(uploadResponse.data, null, 2));
 
-        if (uploadResponse.data && uploadResponse.data.status === 1) {
-          // Extract document_id with explicit fallback
-          let documentId = uploadResponse.data.data?.document_id;
-          if (!documentId) {
-            documentId = uploadResponse.data.document?._id ||
+          if (uploadResponse.data && uploadResponse.data.status === 1) {
+            // Extract document_id with explicit fallback
+            documentId = uploadResponse.data.data?.document_id ||
+                        uploadResponse.data.document?._id ||
                         uploadResponse.data.document_id ||
                         uploadResponse.data.id;
-          }
-          if (!documentId) {
-            this.errorMessage = 'Failed to retrieve document ID from upload response.';
+            if (!documentId) {
+              this.errorMessage = 'Failed to retrieve document ID from upload response.';
+              return;
+            }
+            console.log('Extracted resume:', documentId);
+          } else {
+            this.errorMessage = uploadResponse.data.message || 'Failed to upload resume. Please try again.';
             return;
           }
-          this.payload.resume = documentId;
-          console.log('Extracted resume:', this.payload.resume);
+        }
 
-          // Step 2: Prepare JSON payload for applicant submission
-          const applicantData = {
-            applicant: this.payload.applicant,
-            jobId: this.payload.jobId,
-            apply_position: this.payload.apply_position,
-            requested_location: this.payload.requested_location,
-            education_from_year: this.payload.education_from_year,
-            education_to_year: this.payload.education_to_year,
-            school_name: this.payload.school_name,
-            major: this.payload.major,
-            degree: this.payload.degree,
-            location: this.payload.location,
-            start_date: this.payload.start_date,
-            end_date: this.payload.end_date || '',
-            position: this.payload.position,
-            company: this.payload.company,
-            salary_usd: this.payload.salary_usd,
-            expected_salary: this.payload.expected_salary,
-            knows_someone: this.payload.knows_someone === null ? '' : this.payload.knows_someone.toString(),
-            knows_someone_details: this.payload.knows_someone ? this.payload.knows_someone_details : '',
-            why_apply: this.payload.why_apply || '',
-            resume: this.payload.resume
-          };
+        // Step 2: Prepare JSON payload for applicant submission
+        const applicantData = {
+          applicant: this.payload.applicant,
+          jobId: this.payload.jobId,
+          apply_position: this.payload.apply_position,
+          requested_location: this.payload.requested_location,
+          education_from_year: this.payload.education_from_year,
+          education_to_year: this.payload.education_to_year,
+          school_name: this.payload.school_name,
+          major: this.payload.major,
+          degree: this.payload.degree,
+          location: this.payload.location,
+          start_date: this.payload.start_date,
+          end_date: this.payload.end_date || '',
+          position: this.payload.position,
+          company: this.payload.company,
+          salary_usd: this.payload.salary_usd,
+          expected_salary: this.payload.expected_salary,
+          knows_someone: this.payload.knows_someone === null ? '' : this.payload.knows_someone.toString(),
+          knows_someone_details: this.payload.knows_someone ? this.payload.knows_someone_details : '',
+          why_apply: this.payload.why_apply || '',
+          resume: documentId
+        };
 
-          // Debug the final request payload
-          console.log('Final applicant request:', JSON.stringify(applicantData, null, 2));
+        // Debug the final request payload
+        console.log('Final applicant request:', JSON.stringify(applicantData, null, 2));
 
-          // Step 3: Submit applicant data
-          const response = await submitApplicant(applicantData, this.payload.token);
-          console.log('Submit response:', JSON.stringify(response, null, 2));
+        // Step 3: Submit applicant data
+        const response = await submitApplicant(applicantData, this.payload.token);
+        console.log('Submit response:', JSON.stringify(response, null, 2));
 
-          if (response && response.status === 1) {
-            this.successMessage = response.message || 'Application submitted successfully!';
-            this.resetForm();
-            setTimeout(() => {
-              console.log('Attempting to redirect to /career');
-              if (this.$router) {
-                this.$router.push('/career').catch(err => {
-                  console.error('Redirection error:', err);
-                });
-              } else {
-                console.error('Router is not available');
-              }
-            }, 2000);
-          } else {
-            this.errorMessage = response.message || 'Failed to submit application. Please try again.';
-          }
+        if (response && response.status === 1) {
+          this.successMessage = response.message || 'Application submitted successfully!';
+          this.resetForm();
+          setTimeout(() => {
+            console.log('Attempting to redirect to /career');
+            if (this.$router) {
+              this.$router.push('/career').catch(err => {
+                console.error('Redirection error:', err);
+              });
+            } else {
+              console.error('Router is not available');
+            }
+          }, 2000);
         } else {
-          this.errorMessage = uploadResponse.data.message || 'Failed to upload resume. Please try again.';
+          this.errorMessage = response.message || 'Failed to submit application. Please try again.';
         }
       } catch (error) {
         console.error('Error submitting application:', error, error.response?.data);
@@ -742,4 +732,3 @@ export default {
   }
 }
 </style>
-```

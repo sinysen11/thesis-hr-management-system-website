@@ -79,8 +79,13 @@
           >
             <!-- Image -->
             <div class="w-full md:w-1/2 p-6">
+              <!-- <img
+                :src="item.imageUrl || @/assets/images/4_files/contact_us.jpg"
+                :alt="item.title"
+                class="w-full h-auto object-cover rounded-lg"
+              /> -->
               <img
-                :src="item.imageUrl || '/images/placeholder.png'"
+                src="@/assets/images/4_files/networking_data_analytics.png"
                 :alt="item.title"
                 class="w-full h-auto object-cover rounded-lg"
               />
@@ -125,8 +130,8 @@
         </div>
       </div>
       <p v-if="isLoading" class="text-center text-gray-500">Loading products...</p>
-      <p v-if="error" class="text-center text-red-500">{{ error }}</p>
-      <p v-if="imageError" class="text-center text-red-500 mt-4">{{ imageError }}</p>
+      <!-- <p v-if="error" class="text-center text-red-500">{{ error }}</p> -->
+      <!-- <p v-if="imageError" class="text-center text-red-500 mt-4">{{ imageError }}</p> -->
     </div>
   </div>
 </template>
@@ -202,12 +207,15 @@ export default {
                     const imageResponse = await getOneImage(item.images[0]);
                     if (imageResponse && imageResponse.status === 1 && imageResponse.data?.url) {
                       imageUrl = imageResponse.data.url;
+                      // Test the image URL accessibility
+                      await this.testImageUrl(imageUrl);
                     } else {
-                      console.warn(`No valid image URL for item ${item.title}`);
+                      console.warn(`No valid image URL for item ${item.title}:`, imageResponse);
+                      this.imageError = `No valid image URL for ${item.title}`;
                     }
                   } catch (imageError) {
                     console.error(`Error fetching image for ${item.title}:`, imageError);
-                    this.imageError = 'Some images failed to load. Using placeholder images.';
+                    this.imageError = `Failed to load image for ${item.title}: ${imageError.message}`;
                   }
                 }
                 return {
@@ -229,6 +237,17 @@ export default {
         console.error('Error fetching main contents:', error);
       } finally {
         this.isLoading = false;
+      }
+    },
+    // Test if the image URL is accessible
+    async testImageUrl(url) {
+      try {
+        const response = await fetch(url, { method: 'HEAD' });
+        if (!response.ok) {
+          throw new Error(`Image URL is not accessible: ${url}`);
+        }
+      } catch (error) {
+        throw new Error(`Image URL test failed: ${error.message}`);
       }
     },
     async fetchTabContent(mainContentId, title, description) {
@@ -312,7 +331,6 @@ export default {
     this.startAutoPlay();
     this.initAnimations();
     this.fetchMainContents();
-    // Scroll to section if slug is provided in route
     this.$nextTick(() => {
       const slug = this.$route.params.slug;
       if (slug) {
@@ -330,7 +348,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 @tailwind base;
 @tailwind components;

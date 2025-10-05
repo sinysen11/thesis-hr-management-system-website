@@ -1,10 +1,19 @@
 <template>
-  <div class="careers bg-white font-roboto">
-    <img
-      src="@/assets/images/4_files/our_career.webp"
-      alt="Partners Banner"
-      class="w-full h-auto"
-    />
+  <div class="careers bg-gray-50 font-sans min-h-screen">
+    <!-- Hero Image -->
+    <div class="relative">
+      <img
+        src="@/assets/images/4_files/our_career.webp"
+        alt="Careers Banner"
+        class="w-full h-[400px] object-cover"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent flex items-center justify-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-white tracking-tight animate-fade-in">
+          Join Our Team
+        </h1>
+      </div>
+    </div>
+
     <!-- Google Tag Manager (noscript) -->
     <noscript>
       <iframe
@@ -14,7 +23,6 @@
         style="display: none; visibility: hidden"
       ></iframe>
     </noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
     <!-- Browser Compatibility Warning -->
     <!--[if lt IE 8]>
@@ -26,60 +34,58 @@
     <![endif]-->
 
     <!-- Main Content -->
-    <div class="container mx-auto p-6">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Loading Modal -->
       <div
         v-if="isLoading"
-        class="fixed inset-0 bg-gray-900/40 flex items-center justify-center z-50"
+        class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
         role="dialog"
         aria-modal="true"
         aria-label="Loading"
       >
         <div
-          class="bg-white bg-opacity-90 rounded-lg p-6 flex flex-col items-center space-y-4 shadow-lg animate-fade-in"
+          class="bg-white rounded-xl p-8 flex flex-col items-center space-y-6 shadow-2xl animate-pulse"
         >
           <div
-            class="w-12 h-12 border-4 border-t-[#2e6d56] border-gray-200 rounded-full animate-spin"
+            class="w-16 h-16 border-4 border-t-emerald-600 border-gray-300 rounded-full animate-spin"
           ></div>
-          <p class="text-[#2e6d56] font-medium text-sm">Loading jobs, please wait...</p>
+          <p class="text-emerald-600 font-semibold text-lg">Loading opportunities...</p>
         </div>
       </div>
 
-      <!-- Alert -->
+      <!-- Error Alert -->
       <div
         v-if="errorMessage"
-        class="fixed top-4 right-4 max-w-sm w-full bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-md shadow-md animate-slide-in"
+        class="fixed top-6 right-6 max-w-md w-full bg-red-100 border-l-4 border-red-600 text-red-800 p-4 rounded-lg shadow-lg animate-slide-in"
         role="alert"
       >
         <div class="flex justify-between items-center">
-          <p class="text-sm">{{ errorMessage }}</p>
+          <p class="text-sm font-medium">{{ errorMessage }}</p>
           <button
             @click="errorMessage = ''"
-            class="text-red-700 hover:text-red-900 focus:outline-none"
+            class="text-red-800 hover:text-red-900 focus:outline-none"
             aria-label="Close alert"
           >
-            <i class="fas fa-times"></i>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
         </div>
       </div>
 
       <!-- Filter Section -->
-      <div class="p-4 rounded-lg shadow-md">
-        <div
-          class="flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-4 w-1/2 mx-auto"
-        >
-          <div class="flex-1 w-full md:w-auto">
-            <input
-              v-model="searchQuery"
-              class="border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-[#2e6d56]"
-              placeholder="Search by job title or keyword..."
-            />
-          </div>
+      <div class="mb-12 bg-white p-6 rounded-xl shadow-md">
+        <div class="flex flex-col md:flex-row items-center gap-4 max-w-3xl mx-auto">
+          <input
+            v-model="searchQuery"
+            class="flex-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-gray-400 transition duration-200"
+            placeholder="Search by job title, keyword, or department..."
+          />
           <button
             @click="filterJobs"
-            class="bg-[#2e6d56] text-white px-4 py-2 rounded-lg hover:bg-[#245c48] transition duration-200 w-full md:w-auto"
+            class="w-full md:w-auto bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition duration-300 font-semibold"
           >
-            Search
+            Find Jobs
           </button>
         </div>
       </div>
@@ -87,59 +93,58 @@
       <!-- Empty State -->
       <div
         v-if="!isLoading && filteredJobs.length === 0"
-        class="text-center text-gray-500 py-10"
+        class="text-center py-16 bg-white rounded-xl shadow-md"
       >
-        <p>No jobs found matching your search.</p>
+        <p class="text-gray-600 text-lg font-medium">No opportunities found. Try adjusting your search.</p>
+        <button
+          @click="searchQuery = ''"
+          class="mt-4 text-emerald-600 hover:text-emerald-700 font-semibold"
+        >
+          Clear Search
+        </button>
       </div>
 
       <!-- Job Listings -->
-      <div v-else-if="!isLoading" class="grid gap-6">
+      <div v-else-if="!isLoading" class="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
         <div
           v-for="job in filteredJobs"
           :key="job.id"
-          class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer"
-          @click="goToJobDetail(job.id)"
+          :class="[
+            'relative bg-white p-6 rounded-xl shadow-md border border-gray-100',
+            isJobExpired(job.close_date) ? 'opacity-60 cursor-not-allowed' : 'hover:shadow-xl cursor-pointer transform hover:-translate-y-1'
+          ]"
+          @click="isJobExpired(job.close_date) ? null : goToJobDetail(job.id)"
         >
-          <div class="flex items-start space-x-4">
+          <div v-if="isJobExpired(job.close_date)" class="absolute top-4 right-4 bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+            Closed
+          </div>
+          <div class="flex items-start gap-4">
             <div
-              class="w-12 h-12 rounded-md bg-gray-200 flex items-center justify-center overflow-hidden"
+              class="w-14 h-14 rounded-lg bg-emerald-100 flex items-center justify-center"
             >
-              <span class="text-gray-500 text-lg">🏢</span>
+              <span class="text-emerald-600 text-xl">🏢</span>
             </div>
             <div class="flex-1">
-              <h3 class="text-lg font-semibold text-[#2e6d56]">{{ job.title.des_en }}</h3>
-              <div class="flex items-center text-gray-600 text-sm space-x-2 mb-1">
+              <h3 class="text-xl font-bold text-emerald-700">{{ job.title.des_en }}</h3>
+              <div class="flex items-center gap-3 text-gray-600 text-sm mt-1">
+                <span>{{ job.branch }}</span>
+                <span>•</span>
                 <span>{{ timeAgo(job.postedDate) }}</span>
               </div>
-              <p class="text-gray-500 text-sm mt-1">
+              <p class="text-gray-600 text-sm mt-2">
                 <span class="font-semibold">Publish Date:</span>
                 {{ formatDate(job.publish_date) }}
               </p>
-              <p class="text-gray-500 text-sm mt-1">
+              <p class="text-red-500 text-sm mt-1">
                 <span class="font-semibold">Close Date:</span>
                 {{ formatDate(job.close_date) }}
               </p>
-              <!-- <p class="text-gray-500 text-sm mt-1">
-                <span class="font-semibold">Benefits:</span> {{ job.benefits }}
-              </p> -->
             </div>
-            <div class="text-gray-400 hover:text-gray-600 cursor-pointer">
-              <!-- <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                class="w-5 h-5"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg> -->
-              <span>{{ job.branch }}</span>
-            </div>
+          </div>
+          <div class="mt-4">
+            <span class="inline-block bg-emerald-50 text-emerald-600 text-xs font-semibold px-3 py-1 rounded-full">
+              {{ job.department.name_en || 'N/A' }}
+            </span>
           </div>
         </div>
       </div>
@@ -186,13 +191,9 @@ export default {
       return this.jobs.filter(
         (job) =>
           job.title?.des_en?.toLowerCase()?.includes(query) ||
-          false ||
           job.description?.toLowerCase()?.includes(query) ||
-          false ||
           job.department?.des_en?.toLowerCase()?.includes(query) ||
-          false ||
-          job.branch?.toLowerCase()?.includes(query) ||
-          false
+          job.branch?.toLowerCase()?.includes(query)
       );
     }
   },
@@ -214,7 +215,7 @@ export default {
           requirement: apiJob.requirement || 'N/A',
           postedDate: postedDate,
           location: apiJob.branch || 'N/A',
-          department: apiJob.department || { des_en: 'N/A' }, // Normalize department to object
+          department: apiJob.department || { des_en: 'N/A' },
           number_staff: apiJob.number_staff || 'N/A',
           publish_date: apiJob.publish_date ? new Date(apiJob.publish_date) : null,
           close_date: apiJob.close_date ? new Date(apiJob.close_date) : null,
@@ -224,6 +225,11 @@ export default {
           logo: null
         };
       });
+    },
+    isJobExpired(closeDate) {
+      if (!closeDate) return false;
+      const today = new Date();
+      return new Date(closeDate) < today;
     },
     filterJobs() {
       console.log('Filtering with query:', this.searchQuery);
@@ -255,48 +261,34 @@ export default {
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Roboto";
-  src: url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=block");
-}
-
-.careers {
-  @apply font-roboto;
-}
-
-/* Custom animations for loading modal and alert */
+/* Custom animations */
 .animate-fade-in {
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 .animate-slide-in {
-  animation: slideIn 0.3s ease-in-out;
+  animation: slideIn 0.5s ease-in-out;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
   }
 }
 
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateX(100%);
+    transform: translateX(20px);
   }
   to {
     opacity: 1;
     transform: translateX(0);
   }
-}
-
-.hover:shadow-lg:hover {
-  transform: translateY(-2px);
-  transition: transform 0.2s;
 }
 </style>

@@ -21,7 +21,7 @@ export const getAllTabContent = async (slug) => {
 
 export const getOneImage = async (id) => {
   try {
-    const response = await api.get(`/document/${id}`);
+    const response = await api.get(`/website/images/${id}`);
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : new Error('Network error');

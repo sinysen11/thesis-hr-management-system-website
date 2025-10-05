@@ -163,7 +163,7 @@ export default {
     applyJob() {
       const isLoggedIn = !!localStorage.getItem('token');
       if (!isLoggedIn) {
-        this.$router.push('/signup');
+        this.$router.push('/login');
       } else {
         const user = JSON.parse(localStorage.getItem('user'));
         this.$router.push({
