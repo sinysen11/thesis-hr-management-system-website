@@ -187,16 +187,40 @@
               </a>
               <ul
                 id="products-menu-desktop"
-                class="absolute hidden group-hover:block bg-white shadow-lg p-4 w-64 z-10 transition-opacity duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+                class="absolute hidden group-hover:block bg-gray-100 shadow-lg p-4 w-[600px] z-10 transition-opacity duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
               >
-                <li v-for="item in mainContents" :key="item.id" class="mb-2">
-                  <a
-                    :href="`#${item.slug}`"
-                    class="block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded"
-                    @click.prevent="scrollToSection(item.slug)"
-                  >
-                    {{ item.title }}
-                  </a>
+                <li class="mega-menu-row selectionShareable" id="mega-menu-5425-0">
+                  <ul class="mega-sub-menu flex bg-green-100">
+                    <li class="mega-menu-column mega-menu-columns-6-of-12 selectionShareable" id="mega-menu-5425-0-0">
+                      <ul class="mega-sub-menu">
+                        <li class="mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-5340 selectionShareable" id="mega-menu-item-5340">
+                          <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#it_infrastructure">IT Infrastructure</a>
+                        </li>
+                        <li class="mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-5340 selectionShareable" id="mega-menu-item-5340">
+                          <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#networking_data_analytics">Networking Data Analytics</a>
+                        </li>
+                        <li class="mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-5243 selectionShareable" id="mega-menu-item-5243">
+                          <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#cloud_solution">Cloud Solutions</a>
+                        </li>
+                        <li class="mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-5305 selectionShareable" id="mega-menu-item-5305">
+                          <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#big_data_data_warehouse">Big Data, Data Warehouse</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="mega-menu-column mega-menu-columns-6-of-12 selectionShareable" id="mega-menu-5425-0-1">
+                      <ul class="mega-sub-menu">
+                        <li class="mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-5827 selectionShareable" id="mega-menu-item-5827">
+                          <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#security_solution">Security Solutions</a>
+                        </li>
+                        <li class="mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-4887 selectionShareable" id="mega-menu-item-4887">
+                          <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#professional_service_support">Professional Service Support</a>
+                        </li>
+                        <li class="mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-5242 selectionShareable" id="mega-menu-item-5242">
+                          <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#digital_banking_solution">Digital Banking Solutions</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </div>
@@ -267,16 +291,40 @@
             </a>
             <ul
               id="products-menu-footer"
-              class="absolute hidden group-hover:block bg-white shadow-lg p-4 w-64 z-10 transition-opacity duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
+              class="absolute hidden group-hover:block bg-gray-100 shadow-lg p-4 w-[600px] z-10 transition-opacity duration-300 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0"
             >
-              <li v-for="item in mainContents" :key="item.id" class="mb-2">
-                <a
-                  :href="`#${item.slug}`"
-                  class="block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded"
-                  @click.prevent="scrollToSection(item.slug)"
-                >
-                  {{ item.title }}
-                </a>
+              <li class="mega-menu-row selectionShareable" id="mega-menu-5425-0">
+                <ul class="mega-sub-menu flex bg-green-100">
+                  <li class="mega-menu-column mega-menu-columns-6-of-12 selectionShareable" id="mega-menu-5425-0-0">
+                    <ul class="mega-sub-menu">
+                      <li class="mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-5340 selectionShareable" id="mega-menu-item-5340">
+                        <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#it_infrastructure">IT Infrastructure</a>
+                      </li>
+                      <li class="mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-5340 selectionShareable" id="mega-menu-item-5340">
+                        <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#networking_data_analytics">Networking Data Analytics</a>
+                      </li>
+                      <li class="mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-5243 selectionShareable" id="mega-menu-item-5243">
+                        <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#cloud_solution">Cloud Solutions</a>
+                      </li>
+                      <li class="mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-5305 selectionShareable" id="mega-menu-item-5305">
+                        <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#big_data_data_warehouse">Big Data, Data Warehouse</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="mega-menu-column mega-menu-columns-6-of-12 selectionShareable" id="mega-menu-5425-0-1">
+                    <ul class="mega-sub-menu">
+                      <li class="mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-5827 selectionShareable" id="mega-menu-item-5827">
+                        <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#security_solution">Security Solutions</a>
+                      </li>
+                      <li class="mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-4887 selectionShareable" id="mega-menu-item-4887">
+                        <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#professional_service_support">Professional Service Support</a>
+                      </li>
+                      <li class="mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-5242 selectionShareable" id="mega-menu-item-5242">
+                        <a class="mega-menu-link block py-2 text-gray-700 hover:text-[#2d6f54] transition-colors duration-200 px-2 rounded" href="#digital_banking_solution">Digital Banking Solutions</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>
@@ -538,5 +586,14 @@ export default {
 
 .group:hover .fa-user {
   @apply text-[#2d6f54];
+}
+
+.mega-sub-menu.flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mega-menu-column {
+  flex: 0 0 50%;
 }
 </style>

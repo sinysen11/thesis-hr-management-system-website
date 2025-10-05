@@ -135,7 +135,10 @@
                 <span class="font-semibold">Publish Date:</span>
                 {{ formatDate(job.publish_date) }}
               </p>
-              <p class="text-red-500 text-sm mt-1">
+              <p :class="[
+                'text-sm mt-1',
+                isJobExpired(job.close_date) ? 'text-red-500' : 'text-green-500'
+              ]">
                 <span class="font-semibold">Close Date:</span>
                 {{ formatDate(job.close_date) }}
               </p>
