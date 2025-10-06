@@ -109,15 +109,9 @@
         <div
           v-for="job in filteredJobs"
           :key="job.id"
-          :class="[
-            'relative bg-white p-6 rounded-xl shadow-md border border-gray-100',
-            isJobExpired(job.close_date) ? 'opacity-60 cursor-not-allowed' : 'hover:shadow-xl cursor-pointer transform hover:-translate-y-1'
-          ]"
-          @click="isJobExpired(job.close_date) ? null : goToJobDetail(job.id)"
+          class="relative bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-xl cursor-pointer transform hover:-translate-y-1"
+          @click="goToJobDetail(job.id)"
         >
-          <div v-if="isJobExpired(job.close_date)" class="absolute top-4 right-4 bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-            Closed
-          </div>
           <div class="flex items-start gap-4">
             <div
               class="w-14 h-14 rounded-lg bg-emerald-100 flex items-center justify-center"
@@ -135,10 +129,7 @@
                 <span class="font-semibold">Publish Date:</span>
                 {{ formatDate(job.publish_date) }}
               </p>
-              <p :class="[
-                'text-sm mt-1',
-                isJobExpired(job.close_date) ? 'text-red-500' : 'text-green-500'
-              ]">
+              <p class="text-green-500 text-sm mt-1">
                 <span class="font-semibold">Close Date:</span>
                 {{ formatDate(job.close_date) }}
               </p>
@@ -188,10 +179,11 @@ export default {
   computed: {
     filteredJobs() {
       const query = this.searchQuery.toLowerCase().trim();
+      const jobs = this.jobs.filter(job => !this.isJobExpired(job.close_date));
       if (!query) {
-        return this.jobs;
+        return jobs;
       }
-      return this.jobs.filter(
+      return jobs.filter(
         (job) =>
           job.title?.des_en?.toLowerCase()?.includes(query) ||
           job.description?.toLowerCase()?.includes(query) ||
@@ -232,7 +224,8 @@ export default {
     isJobExpired(closeDate) {
       if (!closeDate) return false;
       const today = new Date();
-      return new Date(closeDate) < today;
+      const previousDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1, 23, 59, 59, 999);
+      return new Date(closeDate) <= previousDay;
     },
     filterJobs() {
       console.log('Filtering with query:', this.searchQuery);
